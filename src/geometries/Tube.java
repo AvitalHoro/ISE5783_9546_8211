@@ -5,11 +5,11 @@ import primitives.Vector;
 
 
 public class Tube extends RadialGeometry {
-    Ray ray;
+    Ray axisRay;
 
-    public Tube(double radius, Ray ray) {
+    public Tube(double radius, Ray axisRay) {
         super(radius);
-        this.ray = ray;
+        this.axisRay = axisRay;
     }
 
     @Override
