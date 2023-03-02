@@ -13,6 +13,13 @@ public class Vector extends Point {
             throw new IllegalArgumentException("Vector Zero not allowable");
     }
 
+    @Override
+    public String toString() {
+        return "Vector{" +
+                xyz +
+                '}';
+    }
+
     public Vector add(Vector other) {
         return new Vector(xyz.add(other.xyz));
     }

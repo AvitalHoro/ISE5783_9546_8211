@@ -29,16 +29,14 @@ public class Point {
         return new Point(xyz.add(v.xyz));
     }
 
-    Vector subtract(Point p){
-        return new Vector(p.xyz.subtract(this.xyz));
+    public Vector subtract(Point other){
+        return new Vector(xyz.subtract(other.xyz));
     }
 
     double distanceSquared(Point other) {
         return (other.xyz.d1-xyz.d1)*(other.xyz.d1-xyz.d1) +
                 (other.xyz.d2-xyz.d2)*(other.xyz.d2-xyz.d2) +
                 (other.xyz.d3-xyz.d3)*(other.xyz.d3-xyz.d3);
-
-
     }
 
     double distance(Point other)
