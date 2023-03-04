@@ -1,9 +1,13 @@
 package geometries;
 
 public abstract class RadialGeometry implements Geometry {
-    protected double radius;
+    protected double radius;     /**radius of Radial Geometry*/
 
-    public RadialGeometry(double radius) {
+    public double getRadius() {   /**get radius*/
+        return radius;
+    }
+
+    public RadialGeometry(double radius) {   /**parameters constructor*/
         this.radius = radius;
     }
 }

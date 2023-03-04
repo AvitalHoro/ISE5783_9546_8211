@@ -5,9 +5,13 @@ import primitives.Vector;
 
 
 public class Tube extends RadialGeometry {
-    Ray axisRay;
+    Ray axisRay;   /**ray to representation tube*/
 
-    public Tube(double radius, Ray axisRay) {
+    public Ray getAxisRay() {   /**get axisRay*/
+        return axisRay;
+    }
+
+    public Tube(double radius, Ray axisRay) {  /**parameters constructor*/
         super(radius);
         this.axisRay = axisRay;
     }
