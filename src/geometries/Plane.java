@@ -3,23 +3,19 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 
+//A class for representing a plane by a point and the normal vector
 public class Plane implements Geometry {
 
-    Point q0;    /**point that represents a plane*/
+    Point q0;
 
-    /**get of point*/
-     public Point getQ0() {
-        return q0;
-    }
+    Vector normal;
 
-    Vector normal;    /**normal to the plane*/
-
-    public Plane(Point q0, Vector normal) {  /**parameters constructor*/
+    public Plane(Point q0, Vector normal) {
         this.q0 = q0;
         this.normal = normal.normalize();
     }
 
-    public Plane(Point p1, Point p2, Point p3) {    /**parameters constructor with point*/
+    public Plane(Point p1, Point p2, Point p3) {
         q0 = p1;
         normal=getNormal();
     }

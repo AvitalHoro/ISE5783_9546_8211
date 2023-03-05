@@ -1,5 +1,6 @@
 package geometries;
 
+//Interface for a circular geometric body (Temporary)
 public abstract class RadialGeometry implements Geometry {
     protected double radius;     /**radius of Radial Geometry*/
 

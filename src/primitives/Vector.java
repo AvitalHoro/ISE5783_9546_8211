@@ -15,14 +15,14 @@ public class Vector extends Point {
 
     @Override
     public String toString() {
-        return "Vector{" +
-                xyz +
-                '}';
+        return "->" + super.toString();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) return true;
+        if (!(obj instanceof Vector other)) return false;
+        return super.equals(other);
     }
 
     public Vector add(Vector other) {
