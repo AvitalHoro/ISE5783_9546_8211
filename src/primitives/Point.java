@@ -33,13 +33,13 @@ public class Point {
         return new Vector(xyz.subtract(other.xyz));
     }
 
-    double distanceSquared(Point other) {   /**distance between two points in a square*/
+    public double distanceSquared(Point other) {   /**distance between two points in a square*/
         return (other.xyz.d1-xyz.d1)*(other.xyz.d1-xyz.d1) +     /**calculation of the square distance*/
                 (other.xyz.d2-xyz.d2)*(other.xyz.d2-xyz.d2) +
                 (other.xyz.d3-xyz.d3)*(other.xyz.d3-xyz.d3);
     }
 
-    double distance(Point other)   /**distance between two points*/
+    public double distance(Point other)   /**distance between two points*/
     {
         return Math.sqrt(distanceSquared(other));
     }
