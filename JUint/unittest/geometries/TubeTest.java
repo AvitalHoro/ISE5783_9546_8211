@@ -21,7 +21,7 @@ class TubeTest {
         // TC01: There is a simple single test here - using a quad
         Tube tb = new Tube(1, new Ray(new Point(0,0,0), new Vector(0,0,1)));
         // ensure there are no exceptions
-        assertDoesNotThrow(() -> tb.getNormal(new Point(1, 2, 3)), "");
+        assertDoesNotThrow(() -> tb.getNormal(new Point(1, 0, 3)), "");
         // generate the test result
         Vector result = tb.getNormal(new Point(0, 1, 3));
         // ensure |result| = 1
