@@ -1,4 +1,4 @@
-package unittests.primitives;
+package unittest.primitives;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -85,7 +85,7 @@ class VectorTest {
     }
     public void testNormalized() {
         Vector v = new Vector(0, 3, 4);
-        Vector n = v.normalized();
+        Vector n = v.normalize();
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
         assertFalse("normalized() changes the vector itself", v == n);

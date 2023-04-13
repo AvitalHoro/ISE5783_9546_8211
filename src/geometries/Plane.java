@@ -17,11 +17,11 @@ public class Plane implements Geometry {
 
     public Plane(Point p1, Point p2, Point p3) {
         q0 = p1;
-        normal=getNormal();
+        normal=getNormal(p1);
     }
 
     @Override
-    public Vector getNormal() {
+    public Vector getNormal(Point point) {
         return null;
     }
 }

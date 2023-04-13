@@ -1,8 +1,8 @@
-package geometries;
+package unittest.geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PolygonTest {
+class PlaneTest {
 
     @org.junit.jupiter.api.Test
     void getNormal() {
