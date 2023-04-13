@@ -11,6 +11,9 @@ import static primitives.Util.isZero;
 class SphereTest {
 
     @org.junit.jupiter.api.Test
+
+    /** Test method for {@link Sphere#getNormal(Point)} (primitives.Point)}. */
+
     public void testgetNormal()
     {
             // ============ Equivalence Partitions Tests ==============
