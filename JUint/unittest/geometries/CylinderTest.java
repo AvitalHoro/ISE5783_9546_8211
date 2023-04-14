@@ -21,6 +21,21 @@ class CylinderTest {
         // TC01: on the round surface
         Cylinder cy = new Cylinder(1, new Ray(new Point(0,0,0), new Vector(0,0,1)), 2);
         // ensure there are no exceptions
+
+        Point[] points ={new Point()
+
+        for (int i=0; i<4; i++)
+        {
+            assertDoesNotThrow(() -> cy.getNormal(points[i]), "");
+            // generate the test result
+            Vector result = cy.getNormal(points[i]);
+            // ensure |result| = 1
+            assertEquals(1, result.length(), 0.00000001, "Tube's normal is not a unit vector");
+            // ensure the result is orthogonal to all the edges
+            assertTrue(isZero(result.dotProduct(new Vector(0,0,1))),
+                    "Tube's normal is not orthogonal to axis ray");
+
+        }
         assertDoesNotThrow(() -> cy.getNormal(new Point(1, 2, 1)), "");
         // generate the test result
         Vector result = cy.getNormal(new Point(1, 2, 3));
