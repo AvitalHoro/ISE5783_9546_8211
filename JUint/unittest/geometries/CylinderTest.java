@@ -15,7 +15,7 @@ class CylinderTest {
     @org.junit.jupiter.api.Test
 
     /** Test method for {@link Cylinder#getNormal(Point)} (primitives.Point)}. */
-
+    //bonus
     void testgetNormal() {
         //The points to be checked
         Point[] points ={new Point(0,0,0), new Point(0,0,2), new Point(0.2, 0.2, 2), new Point(-0.2, 0.1, 0), new Point(1,0,1)};
