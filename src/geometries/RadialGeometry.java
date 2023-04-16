@@ -2,13 +2,20 @@ package geometries;
 
 //Interface for a circular geometric body (Temporary)
 public abstract class RadialGeometry implements Geometry {
-    protected double radius;     /**radius of Radial Geometry*/
+    /** RadialGeometry abstract class represents circular geometric body
+     * @param radius
+     */
 
-    public double getRadius() {   /**get radius*/
+    /**radius of circular radial geometry*/
+    protected double radius;
+
+    //get radius
+    public double getRadius() {
         return radius;
     }
 
-    public RadialGeometry(double radius) {   /**parameters constructor*/
+    //parameters constructor
+    public RadialGeometry(double radius) {
         this.radius = radius;
     }
 }

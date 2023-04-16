@@ -6,13 +6,20 @@ import primitives.Vector;
 
 
 public class Tube extends RadialGeometry {
-    Ray axisRay;   /**ray to representation tube*/
+    /** tube class extends RadialGeometry and represent by a ray
+     * @paam axisRay
+     */
 
-    public Ray getAxisRay() {   /**get axisRay*/
+    /**ray to representation tube*/
+    Ray axisRay;
+
+    //get axisRay
+    public Ray getAxisRay() {
         return axisRay;
     }
 
-    public Tube(double radius, Ray axisRay) {  /**parameters constructor*/
+    //parameters constructor
+    public Tube(double radius, Ray axisRay) {
         super(radius);
         this.axisRay = axisRay;
     }

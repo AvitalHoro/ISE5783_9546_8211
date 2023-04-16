@@ -5,42 +5,46 @@ import primitives.Ray;
 import primitives.Vector;
 
 public class Cylinder extends Tube {
-
-    double height;        /**height of cylinder*/
-
-    public double getHeight() {    /**get of height*/
+    /**cylinder class represents height in double
+     * @param height
+     */
+    /**height of cylinder*/
+    double height;
+    /**get of height*/
+    public double getHeight() {
         return height;
     }
-
-    public Cylinder(double radius, Ray ray, double height) {    /**parameters constructor*/
+    //parameters constructor
+    public Cylinder(double radius, Ray ray, double height) {
         super(radius, ray);
         this.height = height;
     }
 
-    /**
-     *
-     * @param point
-     * @return
-     */
     @Override
     public Vector getNormal(Point point) {
 
         double tmp = axisRay.getDir().dotProduct(point.subtract(axisRay.getP0()));
-        if (tmp == 0)//on the base
+        //on the base
+        if (tmp == 0)
         {
-            if (point == axisRay.getP0())//in the center of each base
+            //in the center of each base
+            if (point == axisRay.getP0())
                 return axisRay.getDir();
-            Point point2 = point.add((axisRay.getDir().scale(-1)));//-v
+            //v to -v
+            Point point2 = point.add((axisRay.getDir().scale(-1)));
             return point2.subtract(point).normalize();
         }
-        if (tmp==height)//on the upper base
+        //on the upper base
+        if (tmp==height)
         {
-            if (point.subtract(axisRay.getP0()).length() == height)//in the center of each base
+            //in the center of each base
+            if (point.subtract(axisRay.getP0()).length() == height)
                 return axisRay.getDir();
             Point point2 = point.add((axisRay.getDir()));//v
             return point2.subtract(point).normalize();
         }
-        Point center = axisRay.getP0().add(axisRay.getDir().scale(tmp));//on the round surface
+        //on the round surface
+        Point center = axisRay.getP0().add(axisRay.getDir().scale(tmp));
         return point.subtract(center).normalize();
     }
 }

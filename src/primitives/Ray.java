@@ -1,23 +1,39 @@
 package primitives;
 
 public class Ray {
-    final Point p0;   /**point to represent a ray*/
-    final Vector dir;   /**vector to represent a ray*/
+    /** Ray class represents ray with Point and Vector
+     * @param p0
+     * @param dir
+     */
 
-    public Ray(Point p0, Vector dir) {   /**parameters constructor*/
+    /**point to represent a ray*/
+    final Point p0;
+
+    /**vector to represent a ray*/
+    final Vector dir;
+
+    /**
+     * constructor to initialize Ray based object with Point and Vector
+     * @param p0
+     * @param dir
+     */
+    public Ray(Point p0, Vector dir) {
         this.p0 = p0;
         this.dir = dir.normalize();
     }
-    public Point getP0() {    /**get p0*/
+    //get p0
+    public Point getP0() {
         return p0;
     }
 
-    public Vector getDir() {   /**get dir*/
+    //get dir
+    public Vector getDir() {
         return dir;
     }
 
     @Override
-    public boolean equals(Object obj) {    /**return if two rays are equals*/
+    //return if two rays are equals
+    public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj instanceof Ray other)
             return this.p0.equals(other.p0) && this.dir.equals(other.dir);
@@ -25,7 +41,8 @@ public class Ray {
     }
 
     @Override
-    public String toString() {   /**return the point and vector of ray*/
+    //return the point and vector of ray
+    public String toString() {
         return "Ray{" +
                 "point: " + p0 +
                 ", vector: " + dir +

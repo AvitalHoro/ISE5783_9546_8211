@@ -5,13 +5,20 @@ import primitives.Vector;
 import primitives.Point;
 
 public class Sphere extends RadialGeometry{
-    Point center;    /**the center point of the sphere*/
+    /** sphere class extends RadialGeometry and represents the center in Point
+     * @param center
+     */
 
-    public Point getCenter() {  /**get center*/
+    /**the center point of the sphere*/
+    Point center;
+
+    //get center
+    public Point getCenter() {
         return center;
     }
 
-    public Sphere(double radius, Point center) {  /**parameters constructor*/
+    //parameters constructor
+    public Sphere(double radius, Point center) {
         super(radius);
         this.center = center;
     }

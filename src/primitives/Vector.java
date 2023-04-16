@@ -7,6 +7,11 @@ public class Vector extends Point {
      * @param xyz Double3 value of vector head
      * @throws IllegalArgumentException in case of Vector(0,0,0)
      */
+
+    /**
+     * constructor to initialize Vector based object in Double3
+     * @param xyz
+     */
     Vector(Double3 xyz) {
         super(xyz);
         if (xyz.equals(Double3.ZERO))
@@ -35,38 +40,69 @@ public class Vector extends Point {
         return super.equals(other);
     }
 
+    /** sum two vectors to a new Vector
+     * @param other
+     * @return result of add
+     */
     public Vector add(Vector other) {
         return new Vector(xyz.add(other.xyz));
     }
 
+    /** multiplier of a vector in a double scalar
+     *
+     * @param scalar
+     * @return result of multiplication
+     */
     public Vector scale(double scalar) {   /**multiplication of vector with scalar*/
         return new Vector(xyz.scale(scalar));
     }
 
-    public double dotProduct(Vector other)   /**scalar multiplication*/
+    /** does scalar multiplication
+     * @param other
+     * @return result of scalar multiplication
+     */
+    public double dotProduct(Vector other)
     {
-        return (xyz.d1 * other.xyz.d1) +   /**calculation of scalar multiplication with algebra*/
+        //calculation of scalar multiplication
+        return (xyz.d1 * other.xyz.d1) +
                 (xyz.d2 * other.xyz.d2) +
                 (xyz.d3 * other.xyz.d3);
     }
 
-    public Vector crossProduct(Vector other)  /**vector multiplication*/
+    /** does vector multiplication
+     *
+     * @param other
+     * @return result of vector multiplication
+     */
+    public Vector crossProduct(Vector other)
     {
-        return new Vector((xyz.d2 * other.xyz.d3) - (xyz.d3 * other.xyz.d2),  /**calculation of vector multiplication in algebra*/
+        //calculation of vector multiplication in algebra
+        return new Vector((xyz.d2 * other.xyz.d3) - (xyz.d3 * other.xyz.d2),
                 (xyz.d3 * other.xyz.d1) - (xyz.d1 * other.xyz.d3),
                 (xyz.d1 * other.xyz.d2) - (xyz.d2 * other.xyz.d1));
     }
 
-    public double lengthSquared()  /**length of vector in a square*/
+    /** calculates the length squared of vector
+     * @return length squared of vector
+     */
+    public double lengthSquared()
     {
         return dotProduct(this);
     }
 
-    public double length() {    /**length of vector*/
+    /** calculates the length of vector
+     *
+     * @return length of vector
+     */
+    public double length() {
         return Math.sqrt(lengthSquared());
     }
 
-    public Vector normalize() {   /**normalize of vector*/
+    /**
+     * normalizes the vector
+     * @return normalized vector
+     */
+    public Vector normalize() {
         return scale(1 / length());
     }
 }
