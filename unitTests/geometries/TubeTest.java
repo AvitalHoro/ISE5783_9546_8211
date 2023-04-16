@@ -3,8 +3,10 @@ package unittest.geometries;
 import geometries.Polygon;
 import geometries.Sphere;
 import geometries.Tube;
+import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,7 +14,7 @@ import static primitives.Util.isZero;
 
 class TubeTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
 
     /** Test method for {@link Tube#getNormal(Point)} (primitives.Point)}. */
 
@@ -27,13 +29,13 @@ class TubeTest {
         // ensure |result| = 1
         assertEquals(1, result.length(), 0.00000001, "Tube's normal is not a unit vector");
         // ensure the result is orthogonal to all the edges
-        assertTrue(isZero(result.dotProduct(new Vector(0,0,1))),
+        assertTrue(Util.isZero(result.dotProduct(new Vector(0,0,1))),
                     "Tube's normal is not orthogonal to axis ray");
 
         // =============== Boundary Values Tests ==================
         // extreme case when 𝑷 − 𝑷𝟎 vector is orthogonal to point start axis ray
         assertDoesNotThrow(() -> tb.getNormal(new Point(1, 0, 0)), "");
-        assertTrue(isZero(result.dotProduct(new Vector(0,0,1))),
+        assertTrue(Util.isZero(result.dotProduct(new Vector(0,0,1))),
                 "Tube's normal is not orthogonal to axis ray");
 
     }

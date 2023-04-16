@@ -1,4 +1,4 @@
-package unittest.primitives;
+package primitives;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,16 +9,20 @@ import primitives.*;
 class PointTest {
 
     @Test
+    /** Test method for {@link Point#add(Point)} (primitives.Point)}. */
+
     void testAdd() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
-        assertEquals(new Point(2, 3, 4), new Point(1, 1, 1).add(new Vector(1, 2, 3)), "Wrong point add");
+       assertEquals(new Point(2, 3, 4), new Point(1, 1, 1).add(new Vector(1, 2, 3)), "Wrong point add");
 
         // =============== Boundary Values Tests ==================
         // there are no boundary tests
     }
 
     @Test
+    /** Test method for {@link Point#subtract(Point)} (primitives.Point)}. */
+
     void testSubtract() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
@@ -30,6 +34,8 @@ class PointTest {
     }
 
     @Test
+    /** Test method for {@link Point#distanceSquared(Point)} (double)}. */
+
     void testDistanceSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
@@ -41,6 +47,8 @@ class PointTest {
     }
 
     @Test
+    /** Test method for {@link Point#distance(Point)} (double)}. */
+
     void testDistance() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
@@ -50,8 +58,6 @@ class PointTest {
         // TC11: test distance with the same point
         assertEquals(0d, new Point(1, 2, 3).distance(new Point(1, 2, 3)), 0.0001, "Wrong distance between the point and itself");
     }
-
-
 }
 
 

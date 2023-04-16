@@ -1,6 +1,7 @@
 package unittest.geometries;
 
 import geometries.Sphere;
+import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Vector;
 
@@ -8,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SphereTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
 
     /** Test method for {@link geometries.Sphere#getNormal(Point)} (primitives.Point)}. */
 

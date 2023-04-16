@@ -1,8 +1,10 @@
-package unittest.geometries;
+package geometries;
 
 import geometries.Plane;
 import geometries.Polygon;
+import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Util;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +12,7 @@ import static primitives.Util.isZero;
 
 class PlaneTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
 
     /** Test method for {@link geometries.Plane#Plane(Point p1, Point p2, Point p3)}. */
 
@@ -37,12 +39,14 @@ class PlaneTest {
                 "Constructed a plane with points are on the same line");
     }
 
-        /** Test method for {@link Plane#getNormal(Point)} (primitives.Point)}. */
-        void testgetNormal() {
+    @Test
+
+    /** Test method for {@link Plane#getNormal(Point)} (primitives.Point)}. */
+    void testgetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here - using a quad
         Point[] pts =
-                { new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1) };
+                {new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1)};
         Plane pln = new Plane(pts[0], pts[1], pts[2]);
         // ensure there are no exceptions
         assertDoesNotThrow(() -> pln.getNormal(new Point(0, 0, 1)), "");
@@ -51,7 +55,7 @@ class PlaneTest {
         // ensure |result| = 1
         assertEquals(1, result.length(), 0.00000001, "Plane's normal is not a unit vector");
         // ensure the result is orthogonal to all the edges
-        assertTrue(isZero(result.dotProduct(pts[0].subtract(pts[1]))),
-                    "Palne's normal is not orthogonal to the plane");
+        assertTrue(Util.isZero(result.dotProduct(pts[0].subtract(pts[1]))),
+                "Palne's normal is not orthogonal to the plane");
     }
 }
