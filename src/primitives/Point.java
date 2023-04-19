@@ -26,6 +26,30 @@ public class Point {
         this.xyz=new Double3(x, y, z);
     }
 
+    /**
+     * get of x
+     * @return d1
+     */
+    public double getX(){
+        return this.xyz.d1;
+    }
+
+    /**
+     * get of y
+     * @return d2
+     */
+    public double getY(){
+        return this.xyz.d2;
+    }
+
+    /**
+     * get of z
+     * @return d3
+     */
+    public double getZ(){
+        return this.xyz.d3;
+    }
+
     @Override
     //return if two points are equals
     public boolean equals(Object obj) {

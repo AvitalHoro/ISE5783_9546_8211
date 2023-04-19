@@ -1,9 +1,11 @@
 package geometries;
-
 import geometries.Plane;
 import geometries.Polygon;
 import org.junit.jupiter.api.Test;
+import static primitives.Util.*;
+import java.util.List;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Util;
 import primitives.Vector;
 
@@ -57,5 +59,38 @@ class PlaneTest {
         // ensure the result is orthogonal to all the edges
         assertTrue(Util.isZero(result.dotProduct(pts[0].subtract(pts[1]))),
                 "Palne's normal is not orthogonal to the plane");
+    }
+
+    @Test
+    /** Test method for {@link Plane#findIntersections(Ray)} (primitives.Ray)}. */
+
+    public void testFindIntersections() {
+
+        // ============ Equivalence Partitions Tests ==============
+
+        Plane plane = new Plane(new Point(1, 0, 0), new Vector(0, 1, 0));
+        // TC01:  ray's head is find on the plane(0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(1, 1, 0), new Vector(1, 1, 1))), "ray's head is find on the plane");
+
+        // TC02:  ray's head is find on the p0(0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(1, 0, 0), new Vector(1, 1, 1))), "ray's head is find on the p0");
+
+        // TC03:  ray's line is contained in plane(0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(1, 1, 0), new Vector(2, 3, 0))), "ray's line is contained in plane");
+
+        // TC04:  ray's line is find in the opposite direction from the plane(0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 2, 3))), "ray's line is find in the opposite direction from the plane");
+
+        // TC05:  ray's line parallels to the plane(0 points)
+        assertNull(plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 0, 0))), "ray's line parallels to the plane");
+
+        // TC06:  ray crosses plane(1 point)
+        Point p = new Point(0.5, 0.25, 0);
+        List<Point> result = plane.findIntersections(new Ray(new Point(1,1,1), new Vector(-1,-2,-3)));
+        assertEquals(1, result.size(), "Wrong number of points");
+        assertEquals(List.of(p), result, "ray crosses plane");
+
+        // =============== Boundary Values Tests ==================
+        // there are no boundary tests
     }
 }

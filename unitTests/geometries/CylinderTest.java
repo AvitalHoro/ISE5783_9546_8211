@@ -70,4 +70,9 @@ class CylinderTest {
                     "Cylinder's normal isn't parallel to axis ray");
         }
     }
+
+    /** Test method for {@link Cylinder#findIntsersections(Ray)} (primitives.Ray)}. */
+     void testFindIntersections() {
+
+    }
 }

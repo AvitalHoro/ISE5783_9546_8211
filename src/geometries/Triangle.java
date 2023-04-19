@@ -1,11 +1,17 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
 
 public class Triangle extends Polygon{
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return super.findIntersections(ray);
+    }
 
     /** triangle class represents 3 points coordinates
      * @param p1

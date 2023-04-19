@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 
 public class Tube extends RadialGeometry {
     /** tube class extends RadialGeometry and represent by a ray
@@ -22,6 +24,11 @@ public class Tube extends RadialGeometry {
     public Tube(double radius, Ray axisRay) {
         super(radius);
         this.axisRay = axisRay;
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 
     @Override

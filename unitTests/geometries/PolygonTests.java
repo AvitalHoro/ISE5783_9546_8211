@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import geometries.Polygon;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Util;
 import primitives.Vector;
 
@@ -19,7 +20,7 @@ import primitives.Vector;
  * @author Dan */
 public class PolygonTests {
 
-    /** Test method for {@link geometries.Polygon#Polygon(primitives.Point...)}. */
+    /** Test method for {@link Polygon#Polygon(primitives.Point...)}. */
     @Test
     public void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
@@ -85,5 +86,10 @@ public class PolygonTests {
         for (int i = 0; i < 3; ++i)
             assertTrue(Util.isZero(result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1]))),
                     "Polygon's normal is not orthogonal to one of the edges");
+    }
+
+    /** Test method for {@link Polygon#findIntsersections(Ray)} (primitives.Ray)}. */
+    void testFindIntersections() {
+
     }
 }

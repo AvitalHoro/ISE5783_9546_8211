@@ -37,6 +37,10 @@ class TubeTest {
         assertDoesNotThrow(() -> tb.getNormal(new Point(1, 0, 0)), "");
         assertTrue(Util.isZero(result.dotProduct(new Vector(0,0,1))),
                 "Tube's normal is not orthogonal to axis ray");
+    }
+
+    /** Test method for {@link Tube#findIntsersections(Ray)} (primitives.Ray)}. */
+    void testFindIntersections() {
 
     }
 }

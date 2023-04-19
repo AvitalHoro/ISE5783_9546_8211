@@ -1,8 +1,11 @@
 package geometries;
 
+import primitives.Ray;
 import primitives.Vector;
 
 import primitives.Point;
+
+import java.util.List;
 
 public class Sphere extends RadialGeometry{
     /** sphere class extends RadialGeometry and represents the center in Point
@@ -21,6 +24,11 @@ public class Sphere extends RadialGeometry{
     public Sphere(double radius, Point center) {
         super(radius);
         this.center = center;
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 
     @Override
