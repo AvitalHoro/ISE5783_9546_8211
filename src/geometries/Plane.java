@@ -6,6 +6,9 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.*;
+
+
 
 public class Plane implements Geometry {
     /**Plane class represents a plane by a point and the normal vector
@@ -37,7 +40,35 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        Point p0 = ray.getP0();
+        Vector v = ray.getDir();
+
+        Vector n = normal;
+
+        if (q0.equals(p0))
+            return null;
+
+        Vector p0_q = q0.subtract(p0);
+
+        double nemurator = alignZero(n.dotProduct(p0_q));
+
+        if (isZero(nemurator))
+            return null;
+
+        double nv = alignZero(n.dotProduct(v));
+
+        if (isZero(nv))
+            return null;
+
+        double t = alignZero(nemurator/nv);
+
+        if(t<=0)
+            return null;
+
+        Point intersection_point = ray.getPoint(t);
+
+
+        return List.of(intersection_point);
     }
 
     @Override

@@ -48,4 +48,14 @@ public class Ray {
                 ", vector: " + dir +
                 '}';
     }
+
+    /**
+     *
+     * @param t - scalar to scale with
+     * @return point
+     */
+    public Point getPoint(double t)
+    {
+        return p0.add(dir.scale(t));
+    }
 }
