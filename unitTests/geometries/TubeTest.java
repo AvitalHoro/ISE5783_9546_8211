@@ -14,10 +14,9 @@ import static primitives.Util.isZero;
 
 class TubeTest {
 
-    @Test
 
     /** Test method for {@link Tube#getNormal(Point)} (primitives.Point)}. */
-
+    @Test
     void testgetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here - using a quad
@@ -39,8 +38,9 @@ class TubeTest {
                 "Tube's normal is not orthogonal to axis ray");
     }
 
-    /** Test method for {@link Tube#findIntsersections(Ray)} (primitives.Ray)}. */
-    void testFindIntersections() {
+    @Test
+    /** Test method for {@link Tube#findIntersections(Ray)}  (primitives.Ray)}. */
+     void testFindIntersections() {
 
     }
 }

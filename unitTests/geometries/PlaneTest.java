@@ -14,10 +14,9 @@ import static primitives.Util.isZero;
 
 class PlaneTest {
 
-    @Test
 
     /** Test method for {@link geometries.Plane#Plane(Point p1, Point p2, Point p3)}. */
-
+    @Test
     public void testConstructor() {
         // ============ Equivalence Partitions Tests ==============
 
@@ -41,9 +40,9 @@ class PlaneTest {
                 "Constructed a plane with points are on the same line");
     }
 
-    @Test
 
     /** Test method for {@link Plane#getNormal(Point)} (primitives.Point)}. */
+    @Test
     void testgetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here - using a quad
@@ -61,9 +60,8 @@ class PlaneTest {
                 "Palne's normal is not orthogonal to the plane");
     }
 
-    @Test
     /** Test method for {@link Plane#findIntersections(Ray)} (primitives.Ray)}. */
-
+    @Test
     public void testFindIntersections() {
 
         // ============ Equivalence Partitions Tests ==============

@@ -1,17 +1,18 @@
 package geometries;
 import java.util.List;
 
-import
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class TringleTest {
 
-    @Test
 
     /** Test method for {@link geometries.Triangle#getNormal(Point)} (primitives.Point)}. */
+    @Test
     public void testgetNormal()
     {
         unittest.geometries.PolygonTests p = new unittest.geometries.PolygonTests();
@@ -19,6 +20,7 @@ public class TringleTest {
     }
 
     /** Test method for {@link Triangle#findIntersections(Ray)} (primitives.Ray)}. */
+    @Test
     void testFindIntersections() {
         Triangle triangle = new Triangle(new Point(1,1,0), new Point(0,1,0), new Point(1, 0, 0));
 

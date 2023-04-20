@@ -14,10 +14,9 @@ import static primitives.Util.isZero;
 
 class CylinderTest {
 
-    @Test
 
-    /** Test method for {@link Cylinder#getNormal(Point)} (primitives.Point)}. */
-    //bonus
+    /** Test method for {@link Cylinder#getNormal(Point)} (primitives.Point)}. bonus */
+    @Test
     void testgetNormal() {
         //The points to be checked
         Point[] points ={new Point(0,0,0), new Point(0,0,2), new Point(0.2, 0.2, 2), new Point(-0.2, 0.1, 0), new Point(1,0,1)};
@@ -72,7 +71,8 @@ class CylinderTest {
     }
 
     /** Test method for {@link Cylinder#findIntsersections(Ray)} (primitives.Ray)}. */
-     void testFindIntersections() {
+    @Test
+    void testFindIntersections() {
 
     }
 }
