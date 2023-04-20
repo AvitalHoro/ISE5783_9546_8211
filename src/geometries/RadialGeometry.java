@@ -9,12 +9,19 @@ public abstract class RadialGeometry implements Geometry {
     /**radius of circular radial geometry*/
     protected double radius;
 
-    //get radius
+
+    /**
+     *
+     * @return radius
+     */
     public double getRadius() {
         return radius;
     }
 
-    //parameters constructor
+    /**
+     * constructor
+     * @param radius
+     */
     public RadialGeometry(double radius) {
         this.radius = radius;
     }
