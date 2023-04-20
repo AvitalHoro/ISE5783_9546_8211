@@ -25,43 +25,43 @@ public class TringleTest {
         Triangle triangle = new Triangle(new Point(1,1,0), new Point(0,1,0), new Point(1, 0, 0));
 
         // ============ Equivalence Partitions Tests ==============
-        // **** Group: Ray's line starts outside
-        // TC01: Ray goes inside (1 point)
-        Point p = new Point(0.5,0.5,0);
-        List<Point> result = triangle.findIntersections(new Ray(new Point(1, 2, -1), new Vector(-0.5, -1.5, 1)));
-        assertEquals(1, result.size(), "Wrong number of points");
-        assertEquals(List.of(p), result, "Ray starts outside and goes inside");
 
-        // TC02: Ray goes outside(0 points)
-        assertNull(triangle.findIntersections(new Ray(new Point(1, 2, -1), new Vector(0.5, 1.5, -1))),
+        // TC01: Ray starts outside the triangle and crosses it (1 point)
+        Point p = new Point(0.5,0.6,0);
+        List<Point> result = triangle.findIntersections(new Ray(new Point(1, 1, 1), new Vector(-0.5, -0.4, -1)));
+        assertEquals(1, result.size(), "Wrong number of points");
+        assertEquals(List.of(p), result, "Ray crosses triangle");
+
+        // TC02: Ray starts outside the triangle and does not cross it
+        assertNull(triangle.findIntersections(new Ray(new Point(-0.4, -0.4, 0), new Vector(-0.6, -0.6, -1))),
+                "Ray does not cross triangle");
+
+        // TC03: Ray starts outside the triangle and does not cross the plane of triangle
+        assertNull(triangle.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 1, 1))),
+                "Ray does not cross the plane of triangle");
+
+        //TC04: Ray starts outside the triangle and goes opposite vertex
+        assertNull(triangle.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 1, -1))),
                 "Ray starts outside and goes outside");
 
-        // TC03: Ray is parallel to the triangle (0 points)
-        assertNull(triangle.findIntersections(new Ray(new Point(1, 2, -1), new Vector(1, 0, 0))),
-                " Ray is parallel to the triangle");
-
-        // **** Group: Ray's line starts at triangle
-        // TC04: Ray goes outside(0 points)
-        // TC05: Ray is contained at triangle (0 points)
-
-        // **** Group: Ray's line starts opposite the vertex
-        // TC05: Ray goes inside(0 points)
-        // TC07: Ray goes outside(0 points)
 
         // =============== Boundary Values Tests ==================
-        // **** Group: Ray's line starts at the continuation of side
-        // TC08: Ray goes inside(2 points)
-        // TC09: Ray goes outside(0 points)
-        // TC010: Ray goes to the side(0 points)
+        //TC05: Ray starts outside the triangle and goes to the side
+        assertNull(triangle.findIntersections(new Ray(new Point(1,1,1), new Vector(0, -0.5, -1))),
+                "Ray starts opposite the vertex");
+        //TC06: Ray starts outside the triangle and goes to the vertex
+        assertNull(triangle.findIntersections(new Ray(new Point(1,1,1), new Vector(0, -1, -1))),
+                "Ray starts opposite the vertex");
+        //TC07: Ray starts outside the triangle and goes to the side's continuation
+        assertNull(triangle.findIntersections(new Ray(new Point(1,1,1), new Vector(0, 1, -1))),
+                "Ray starts opposite the vertex");
+        //TC08: Ray starts at triangle and goes inside
+        assertNull(triangle.findIntersections(new Ray(new Point(0.5,0.6,0), new Vector(0, 1, 0))),
+                "Ray starts opposite the vertex");
+        //TC09: Ray starts at triangle and goes outside
+        assertNull(triangle.findIntersections(new Ray(new Point(0.5,0.6,0), new Vector(1, 1, 1))),
+                "Ray starts opposite the vertex");
 
-        // **** Group: Ray's line starts at a vertex
-        // TC11: Ray goes inside(1 points)
-        // TC12: Ray goes outside(0 points)
-
-        // **** Group: Ray's line starts at a side
-        // TC013: Ray goes inside(1 points)
-        // TC14: Ray goes to the vertex(0 points)
-        // TC15: Ray goes outside(0 points)
 
 
 
