@@ -28,7 +28,7 @@ class SphereTest {
             // ensure |result| = 1
             assertEquals(1, result.length(), 0.00000001, "Sphere's normal is not a unit vector");
             // ensure the result is parallel to radius
-            assertThrows(IllegalArgumentException.class, //
+            assertThrows(IllegalArgumentException.class,
                 () -> result.crossProduct((new Point(0, 0, 1).subtract(new Point(0, 0, 0)))),
                 "Shpere's normal isn't parallel to radius");
     }
@@ -55,9 +55,9 @@ class SphereTest {
         assertEquals(List.of(p1, p2), result, "Ray crosses sphere at two points");
 
         // TC03: Ray starts inside the sphere (1 point)
-        Point p3 = new Point(0.5773502692, 0.5773502692, 0.5773502692);
+        Point p3 = new Point(1.5773502692, 1.5773502692, 1.5773502692);
         List<Point> result1 = sphere.findIntersections(new Ray(new Point(0.5, 0.5, 0.5),
-                new Vector(0.07735026919, 0.07735026919, 0.07735026919)));
+                new Vector(1.077350269, 1.077350269, 1.077350269)));
         assertEquals(1, result1.size(), "Wrong number of points");
         assertEquals(List.of(p3), result1, "Ray crosses sphere at one point");
         //...
@@ -70,8 +70,8 @@ class SphereTest {
         // =============== Boundary Values Tests ==================
         // **** Group: Ray's line crosses the sphere (but not the center)
         // TC11: Ray starts at sphere and goes inside (1 point)
-        List<Point> result2 = sphere.findIntersections(new Ray(new Point(0.4082482905, 0.8164965809, 0.4082482905),
-                new Vector(0.1691019787, -0.2391463117, 0.1691019787)));
+        List<Point> result2 = sphere.findIntersections(new Ray(new Point(1.267261242, 0.5345224838, 0.8017837257),
+                new Vector(0.3100890272, 0.04282778539, -0.2244334565)));
         assertEquals(1, result2.size(), "Wrong number of points");
         assertEquals(List.of(p3), result2, "Ray crosses sphere at one point");
 

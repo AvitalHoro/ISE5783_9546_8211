@@ -67,16 +67,16 @@ class PlaneTest {
         // ============ Equivalence Partitions Tests ==============
 
         Plane plane = new Plane(new Point(1, 0, 0), new Vector(0, 1, 0));
-        // TC01:  ray's head is find on the plane(0 points)
+        // TC01:  ray's head finds on the plane(0 points)
         assertNull(plane.findIntersections(new Ray(new Point(1, 1, 0), new Vector(1, 1, 1))), "ray's head is find on the plane");
 
-        // TC02:  ray's head is find on the p0(0 points)
+        // TC02:  ray's head finds on the p0(0 points)
         assertNull(plane.findIntersections(new Ray(new Point(1, 0, 0), new Vector(1, 1, 1))), "ray's head is find on the p0");
 
         // TC03:  ray's line is contained in plane(0 points)
         assertNull(plane.findIntersections(new Ray(new Point(1, 1, 0), new Vector(2, 3, 0))), "ray's line is contained in plane");
 
-        // TC04:  ray's line is find in the opposite direction from the plane(0 points)
+        // TC04:  ray's line finds in the opposite direction from the plane(0 points)
         assertNull(plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 2, 3))), "ray's line is find in the opposite direction from the plane");
 
         // TC05:  ray's line parallels to the plane(0 points)
@@ -84,7 +84,7 @@ class PlaneTest {
 
         // TC06:  ray crosses plane(1 point)
         Point p = new Point(0.5, 0.25, 0);
-        List<Point> result = plane.findIntersections(new Ray(new Point(1,1,1), new Vector(-1,-2,-3)));
+        List<Point> result = plane.findIntersections(new Ray(new Point(1,1,1), new Vector(-0.5,-0.75,-1)));
         assertEquals(1, result.size(), "Wrong number of points");
         assertEquals(List.of(p), result, "ray crosses plane");
 
