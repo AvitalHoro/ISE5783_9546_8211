@@ -55,12 +55,12 @@ public class Plane implements Geometry {
         if (isZero(nemurator))
             return null;
 
-        double nv = alignZero(n.dotProduct(v));
+        double denominator = alignZero(n.dotProduct(v));
 
-        if (isZero(nv))
+        if (isZero(denominator))
             return null;
 
-        double t = alignZero(nemurator/nv);
+        double t = alignZero(nemurator / denominator);
 
         if(t<=0)
             return null;

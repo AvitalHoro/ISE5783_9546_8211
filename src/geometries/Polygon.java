@@ -8,20 +8,29 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-/** Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
+/**
+ * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
  * system
- * @author Dan */
+ *
+ * @author Dan
+ */
 public class Polygon implements Geometry {
-    /** List of polygon's vertices */
+    /**
+     * List of polygon's vertices
+     */
     protected final List<Point> vertices;
-    /** Associated plane in which the polygon lays */
-    protected final Plane       plane;
-    private final int           size;
+    /**
+     * Associated plane in which the polygon lays
+     */
+    protected final Plane plane;
+    private final int size;
 
-    /** Polygon constructor based on vertices list. The list must be ordered by edge
+    /**
+     * Polygon constructor based on vertices list. The list must be ordered by edge
      * path. The polygon must be convex.
-     * @param  vertices                 list of vertices according to their order by
-     *                                  edge path
+     *
+     * @param vertices list of vertices according to their order by
+     *                 edge path
      * @throws IllegalArgumentException in any case of illegal combination of
      *                                  vertices:
      *                                  <ul>
@@ -42,19 +51,19 @@ public class Polygon implements Geometry {
         if (vertices.length < 3)
             throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
         this.vertices = List.of(vertices);
-        size          = vertices.length;
+        size = vertices.length;
 
         // Generate the plane according to the first three vertices and associate the
         // polygon with this plane.
         // The plane holds the invariant normal (orthogonal unit) vector to the polygon
-        plane         = new Plane(vertices[0], vertices[1], vertices[2]);
+        plane = new Plane(vertices[0], vertices[1], vertices[2]);
         if (size == 3) return; // no need for more tests for a Triangle
 
-        Vector  n        = plane.getNormal(vertices[0]);
+        Vector n = plane.getNormal(vertices[0]);
         // Subtracting any subsequent points will throw an IllegalArgumentException
         // because of Zero Vector if they are in the same point
-        Vector  edge1    = vertices[vertices.length - 1].subtract(vertices[vertices.length - 2]);
-        Vector  edge2    = vertices[0].subtract(vertices[vertices.length - 1]);
+        Vector edge1 = vertices[vertices.length - 1].subtract(vertices[vertices.length - 2]);
+        Vector edge2 = vertices[0].subtract(vertices[vertices.length - 1]);
 
         // Cross Product of any subsequent edges will throw an IllegalArgumentException
         // because of Zero Vector if they connect three vertices that lay in the same
@@ -80,9 +89,44 @@ public class Polygon implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        List<Point> intersections = plane.findIntersections(ray);
+        if (intersections == null)
+            return null;
+        Point intersectionPoint = intersections.get(0);
+
+        try {
+
+            Vector edgeVector = this.vertices.get(0).subtract(this.vertices.get(this.size - 1)).normalize();
+            Vector vecToPoint = intersectionPoint.subtract(this.vertices.get(size - 1)).normalize();
+            Vector normalVector = edgeVector.crossProduct(vecToPoint).normalize();    // the first vector to compare to the others
+
+            for (int i = 0; i < this.size - 1; i++) {
+                edgeVector = this.vertices.get(i + 1).subtract(this.vertices.get(i)).normalize();
+                vecToPoint = intersectionPoint.subtract(this.vertices.get(i)).normalize();
+
+                // the point is on the edge
+                if (edgeVector.equals(vecToPoint) || edgeVector.equals(edgeVector.scale(-1)))
+                    return null;
+
+                Vector crossVector = edgeVector.crossProduct(vecToPoint).normalize();
+
+                if (normalVector.dotProduct(crossVector) < 0 /*!normalVector.equals(crossVector)*/)    // at least 1 vec is not the same, then the point is outside the polygon
+                    return null;
+            }
+            intersections.clear(); // the point is inside the polygon
+            intersections.add(intersectionPoint);
+            return intersections;
+        } catch (IllegalArgumentException e) {
+            // an exception was thrown because the zero vector was constructed because
+            // the point of intersection was on a vertex or on an edge
+            return null;
+
+
+        }
     }
 
     @Override
-    public Vector getNormal(Point point) { return plane.getNormal(point); }
+    public Vector getNormal(Point point) {
+        return plane.getNormal(point);
+    }
 }

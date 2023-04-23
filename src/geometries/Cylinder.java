@@ -4,7 +4,10 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static primitives.Util.alignZero;
 
 public class Cylinder extends Tube {
     /**cylinder class represents height in double
@@ -24,7 +27,33 @@ public class Cylinder extends Tube {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return super.findIntersections(ray);
+        List<Point> helpIntersections = super.findIntersections(ray);
+
+        List<Point> pointList = new ArrayList<>();
+
+        if (helpIntersections != null) {
+            for (Point my_point : helpIntersections) {
+                Point point = my_point;
+                double projection = point.subtract(axisRay.getP0()).dotProduct(axisRay.getDir());
+                if (alignZero(projection) > 0 && alignZero(projection - this.height) < 0)
+                    pointList.add(point);
+            }
+        }
+
+        // intersect with base
+        Circle base = new Circle(axisRay.getP0(), radius, axisRay.getDir());
+        helpIntersections = base.findIntersections(ray);
+        if (helpIntersections != null)
+            pointList.add(helpIntersections.get(0));
+
+        base = new Circle(axisRay.getPoint(height), radius, axisRay.getDir());
+        helpIntersections = base.findIntersections(ray);
+        if (helpIntersections != null)
+            pointList.add(helpIntersections.get(0));
+
+        if (pointList.size() == 0)
+            return null;
+        return pointList;
     }
 
     @Override
