@@ -46,7 +46,8 @@ class TubeTest {
          Tube tube = new Tube(1d, new Ray(new Point(1, 0, 0), new Vector(0, 0, 1)));
 
          // ============ Equivalence Partitions Tests ==============
-         //מתחיל בחוץ וחותך בשתי נקודות
+
+         //TC01: Ray starts outside and crosses the Tube(2 points)
          Point p1 = new Point(2, 0, 1);
          Point p2 = new Point(0, 0, 3);
          List<Point> result = tube.findIntersections(new Ray(new Point(3, 0, 0),
@@ -54,67 +55,65 @@ class TubeTest {
          assertEquals(2, result.size(), "Wrong number of points");
          if (result.get(0).getX() > result.get(1).getX())
              result = List.of(result.get(1), result.get(0));
-         assertEquals(List.of(p1, p2), result, "Ray crosses sphere at two points");
+         assertEquals(List.of(p1, p2), result, "Ray crosses tube at two points");
 
-         //מתחיל בפנים וחותך בנקודה אחת
+         //TC02: Ray starts inside and crosses(1 point)
          List<Point> result1 = tube.findIntersections(new Ray(new Point(0.5, 0.5, 0.5),
                  new Vector(1.5, -0.5, 0.5)));
          assertEquals(1, result1.size(), "Wrong number of points");
-         assertEquals(List.of(p1), result1, "Ray crosses sphere at two points");
+         assertEquals(List.of(p1), result1, "Ray crosses tube at one points");
 
-         //מתחיל החוץ והולך לכיוון השני
+         //TC03: Ray starts outside and goes to opposite direction(0 points)
          assertNull(tube.findIntersections(new Ray(new Point(3,0,0), new Vector(1, 1, 1))),
-                 "ray starts outside and does not cross");
+                 "Ray starts outside and does not cross");
 
          // =============== Boundary Values Tests ==================
-         //מתחיל בחוץ ומקביל לאורך
+
+         //TC04: Ray starts outside and parallels to height(0 points)
          assertNull(tube.findIntersections(new Ray(new Point(3, 0, 0), new Vector(0, 0, 1))),
-                 "Ray's line out of sphere");
+                 "Ray parallels and does not crosses");
 
-         //הולך על הגובה של הצינור
+         //TC05: Ray goes at the height(0 points)
          assertNull(tube.findIntersections(new Ray(new Point(2, 0, 0), new Vector(0, 0, 1))),
-                 "Ray's line out of sphere");
+                 "Ray goes at the height and does not cross");
 
-
-         //מתחיל על הצינור וחותך בנקודה אחת
+         //TC06: Ray starts at tube and crosses(1 point)
          List<Point> result2 = tube.findIntersections(new Ray(p2, new Vector(1, 0, -1)));
          assertEquals(1, result2.size(), "Wrong number of points");
-         assertEquals(List.of(p1), result2, "Ray crosses sphere at two points");
+         assertEquals(List.of(p1), result2, "Ray starts at tube and crosses at one point");
 
-         //מתחיל על הצינור ומקביל, חותך בנקודה אחת
+         //TC07: Ray starts at tube and parallels(1 point)
          List<Point> result3 = tube.findIntersections(new Ray(p2, new Vector(0, 0, 1)));
          assertEquals(1, result3.size(), "Wrong number of points");
-         assertEquals(List.of(p1), result3, "Ray crosses sphere at two points");
+         assertEquals(List.of(p1), result3, "Ray starts at tube and crosses at one points");
 
-         //מתחיל על הצינור והולך לכיוון השני
+         //TC08: Ray starts at tube and goes to opposite direction(0 points)
          assertNull(tube.findIntersections(new Ray(p2, new Vector(0, 0, -1))),
-                 "Ray's line out of sphere");
+                 "Ray starts at tube and does not cross");
 
-         //מתחיל בפנים ומתקביל לגבוה
+         //TC09: Ray starts inside and parallels to the height(0 points)
          assertNull(tube.findIntersections(new Ray(new Point(0.5, 0.5, 1), new Vector(0, 0, 1))),
-                 "Ray's line out of sphere");
+                 "Ray parallels to height and does not cross");
 
-         //מתחיל בחוץ ומקביל לרוחב, שתי נקודות
+         //TC10: Ray starts outside and parallels to the height(2 points)
          Point p3 = new Point(0, 0, 1);
          List<Point> result4 = tube.findIntersections(new Ray(new Point(-1, 0, 1), new Vector(1, 0, 0)));
          assertEquals(20, result4.size(), "Wrong number of points");
          if (result4.get(0).getX() > result4.get(1).getX())
              result = List.of(result4.get(1), result4.get(0));
-         assertEquals(List.of(p3, p1), result, "Ray crosses sphere at two points");
+         assertEquals(List.of(p3, p1), result, "Ray crosses tube at two points");
 
-         //מתחיל בנקודת המרכז ומקביל לגובה
+         //TC11: Ray starts at P0 point and parallels to the height(0 points)
          assertNull(tube.findIntersections(new Ray(new Point(1, 0, 0), new Vector(0, 0, 1))),
-                 "Ray's line out of sphere");
+                 "Ray starts at P0 and does not cross");
 
-         //מתחיל על הגובה
-         assertNull(tube.findIntersections(new Ray(new Point(1, 0, 1), new Vector(0, 0, 1))),
-                 "Ray's line out of sphere");
+         //TC12: Ray starts before P0 and goes at height(0 points)
+         assertNull(tube.findIntersections(new Ray(new Point(1, 0, -1), new Vector(0, 0, 1))),
+                 "Ray starts before P0 and does not cross");
 
-         //מתחיל במרכז וחותך בנקודה אחת
+         //TC13: Ray starts at P0 point and crosses(1 point)
          List<Point> result5 = tube.findIntersections(new Ray(new Point(1, 0, 0), new Vector(1, 0, 1)));
          assertEquals(1, result5.size(), "Wrong number of points");
-         assertEquals(List.of(p1), result5, "Ray crosses sphere at two points");
-
-
+         assertEquals(List.of(p1), result5, "Ray starts at P0 and crosses tune at one points");
      }
 }
