@@ -115,7 +115,7 @@ class CylinderTest {
         // TC14: Ray's perpendicular to Cylinder's Ray, and starts outside Cylinder
         lst = cylinder.findIntersections(new Ray(new Point(-2, 0, 0.5), new Vector(1, 0, 0)));
         assertEquals(2, lst.size(), error);
-        assertEquals(List.of(new Point(1, 0, 0.5), new Point(3, 0, 0.5)), lst, error);
+        assertEquals(List.of(new Point(3.0,0.0,0.5), new Point(1.0,0.0,0.5)), lst, error);
         // TC15: Ray's perpendicular to Cylinder's Ray, and starts inside Cylinder (not center)
         lst = cylinder.findIntersections(new Ray(new Point(1.5, 0, 0.5), new Vector(1, 0, 0)));
         assertEquals(1, lst.size(), error);
@@ -137,8 +137,8 @@ class CylinderTest {
         // TC20: Ray starts on the surface to inside
         lst = cylinder.findIntersections(new Ray(new Point(3, 0, -0.5), new Vector(-1, 0, 1)));
         assertEquals(2, lst.size(), error);
-        assertEquals(List.of(new Point(2.5, 0, 0), new Point(1, 0, 1.5)), lst, error);
-        // TC21: Ray starts from the center
+        assertEquals(List.of(new Point(1.0,0.0,1.5), new Point(2.5,0.0,0.0)), lst, error);
+        //TC21: Ray starts from the center
         lst = cylinder.findIntersections(new Ray(new Point(2, 0, 0), new Vector(1, 0, 1)));
         assertEquals(1, lst.size(), error);
         assertEquals(List.of(new Point(3, 0, 1)), lst, error);
@@ -257,39 +257,39 @@ class CylinderTest {
         lst = cylinder.findIntersections(new Ray(new Point(0.5, -1, 2), new Vector(0, 1, 0)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(0.5, 0.133974596215, 2)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(0.5, 1.866025403784, 2)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.5,1.8660254037844384,2.0)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.5,0.1339745962155614,2.0)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC55:  ray head is after and above cylinder axis head (2 point)
         lst = cylinder.findIntersections(new Ray(new Point(1.5, -1, 2), new Vector(0, 1, 0)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(1.5, 0.133974596215, 2)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(1.5, 1.866025403784, 2)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.5,1.8660254037844384,2.0)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.5,0.133974596215,2.0)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC56:  ray head is in same x coordinates and above cylinder axis head (2 point)
         lst = cylinder.findIntersections(new Ray(new Point(-1, 1.5, 2), new Vector(1, 0, 0)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(0.133974596215, 1.5, 2)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(1.866025403784, 1.5, 2)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.8660254037844384,1.5,2.0)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.133974596215, 1.5, 2.0)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC57:  ray head is before and under cylinder axis head (2 point)
         cylinder = new Cylinder(1d,new Ray(new Point(1, 1, 1), new Vector(0, 0, -1)),3d);
         lst = cylinder.findIntersections(new Ray(new Point(0.5, -1, -1), new Vector(0, 1, 0)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(0.5, 0.133974596215, -1)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(0.5, 1.866025403784, -1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.5,1.8660254037844384,-1.0)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.5,0.133974596215,-1.0)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC58:  ray head is after and under cylinder axis head (2 point)
         lst = cylinder.findIntersections(new Ray(new Point(1.5, -1, -1), new Vector(0, 1, 0)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(1.5, 0.133974596215, -1)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(1.5, 1.866025403784, -1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.5, 1.866025403784, -1)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.5, 0.133974596215, -1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC59:  ray head is in same x coordinates and under cylinder axis head (2 point)
         lst = cylinder.findIntersections(new Ray(new Point(-1, 1.5, -1), new Vector(1, 0, 0)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(0.133974596215, 1.5, -1)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(1.866025403784, 1.5, -1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.8660254037844384, 1.5, -1)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.133974596215, 1.5, -1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Group: Ray is orthogonal to cylinder axis no intersect the tube because the ray is tangent to tube surface (0 point) @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         // TC60:  ray head is before and above cylinder axis head (0 point)
         lst = cylinder.findIntersections(new Ray(new Point(0, -1, 2), new Vector(0, 1, 0)));
@@ -564,8 +564,8 @@ class CylinderTest {
         lst = cylinder.findIntersections(new Ray(new Point(0.5, 1, 5), new Vector(0, 0, -1)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(0.5, 1, 4)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(0.5, 1, 1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.5, 1, 1)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(0.5,1.0,4.0)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC147:  ray head is in same x coordinates and above cylinder axis head ray is in same direction as cylinder axis, inside the cylinder (0 point)
         lst = cylinder.findIntersections(new Ray(new Point(1, 0.5, 5), new Vector(0, 0, 1)));
         assertNull(lst, error);
@@ -573,8 +573,8 @@ class CylinderTest {
         lst = cylinder.findIntersections(new Ray(new Point(1, 0.5, 5), new Vector(0, 0, -1)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(1, 0.5, 4)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(1, 0.5, 1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.0,0.5,1.0)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1, 0.5, 4)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC149:  ray head is after and above cylinder axis head ray is in same direction as cylinder axis, inside the cylinder (0 point)
         lst = cylinder.findIntersections(new Ray(new Point(1.5, 1, 5), new Vector(0, 0, 1)));
         assertNull(lst, error);
@@ -582,8 +582,8 @@ class CylinderTest {
         lst = cylinder.findIntersections(new Ray(new Point(1.5, 1, 5), new Vector(0, 0, -1)));
         assertEquals(2, lst.size(), error);
         // First intersection point is the closest to ray head
-        assertEquals((new Point(1.5, 1, 4)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
-        assertEquals((new Point(1.5, 1, 1)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.5, 1, 1)), lst.get(0), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
+        assertEquals((new Point(1.5, 1, 4)), lst.get(1), error); // The points are compared by alignZero, which means that it around 12 digits after the decimal point.
         // TC151:  ray head is before and above cylinder axis head ray is in same direction as cylinder axis, inside the cylinder, ray coalesce with cylinder surface (0 point)
         lst = cylinder.findIntersections(new Ray(new Point(0, 1, 5), new Vector(0, 0, 1)));
         assertNull(lst, error);

@@ -15,7 +15,7 @@ public class TringleTest {
     @Test
     public void testgetNormal()
     {
-        unittest.geometries.PolygonTests p = new unittest.geometries.PolygonTests();
+        geometries.PolygonTests p = new geometries.PolygonTests();
         p.testGetNormal();
     }
 

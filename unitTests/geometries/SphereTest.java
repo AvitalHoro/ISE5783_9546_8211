@@ -1,4 +1,4 @@
-package unittest.geometries;
+package geometries;
 import static primitives.Util.*;
 import geometries.Polygon;
 import geometries.Sphere;
