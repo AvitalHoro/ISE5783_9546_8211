@@ -1,3 +1,4 @@
+
 package primitives;
 
 /** Wrapper class for java.jwt.Color The constructors operate with any
@@ -12,9 +13,6 @@ public class Color {
 
     /** Black color = (0,0,0) */
     public static final Color BLACK = new Color();
-
-    /** blue color*/
-    public static final Color BLUE = new Color(java.awt.Color.BLUE);
 
     /** Default constructor - to generate Black Color (privately) */
     private Color() { rgb = Double3.ZERO; }

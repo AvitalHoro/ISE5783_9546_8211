@@ -1,13 +1,14 @@
+
 package renderer;
 
-import primitives.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+        import primitives.Color;
+        import java.awt.image.BufferedImage;
+        import java.io.File;
+        import java.io.IOException;
+        import java.util.logging.Level;
+        import java.util.logging.Logger;
 
-import javax.imageio.*;
+        import javax.imageio.*;
 
 /**
  * Image writer class combines accumulation of pixel color matrix and finally

@@ -3,32 +3,41 @@ package lighting;
 import primitives.*;
 
 /**
- * Ambient light foe all graphic object
- * @author Avital & Ahuva
+ *  this is a class that represents the environmental lightning in a scene
  */
-public class AmbientLight {
-    private final Color intensity; //light intensity as Color
-    public static final AmbientLight NONE = new AmbientLight();
+public class AmbientLight
+{
+    /**
+     *
+     */
+    Color intensity;
 
     /**
-     * primary constructor
-     * @param Ia basic intensity light
-     * @param Ka attenuation factor
+     * construct the ambient light using a color, and it's attenuation factor
+     * @param Ia the base intensity of the light
+     * @param Ka the attenuation factor of the intensity for each rgb color
      */
-    public AmbientLight(Color Ia, Double3 Ka){
+    public AmbientLight(Color Ia, Double3 Ka) {
         intensity = Ia.scale(Ka);
     }
 
     /**
-     * default constructor
+     * construct the ambient light using a color, and it's attenuation factor
+     * @param Ia
+     * @param Ka
      */
-    public AmbientLight(){
-        intensity = Color.BLACK;
+    public AmbientLight(Color Ia, double Ka) {
+        intensity = Ia.scale(Ka);
     }
 
     /**
-     * getter for intensity
-     * @return actual intensity
+     *
+     */
+    public static final AmbientLight NONE = new AmbientLight(Color.BLACK, Double3.ZERO);
+
+    /**
+     *
+     * @return intensity
      */
     public Color getIntensity() {
         return intensity;
