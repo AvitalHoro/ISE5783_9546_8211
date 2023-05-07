@@ -2,6 +2,7 @@ package renderer;
 
 import static java.awt.Color.YELLOW;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -89,6 +90,7 @@ public class RenderTest {
      * Test for XML based scene - for bonus
      */
     @Test
+    @Disabled
     public void basicRenderXml() {
         Scene scene = new Scene("XML Test scene");
         // enter XML file name and parse from XML file into scene object

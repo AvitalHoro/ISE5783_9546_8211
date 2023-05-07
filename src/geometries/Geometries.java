@@ -3,6 +3,7 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,13 +12,13 @@ public class Geometries implements Intersectable {
     /**
      *
      */
-    List<Intersectable> bodies;
+    List<Intersectable> shapes;
 
     /**
      * empty constructor
      */
     public Geometries() {
-        bodies = new LinkedList();
+        shapes = new LinkedList();
     }
 
     /**
@@ -26,15 +27,16 @@ public class Geometries implements Intersectable {
      * @param geometries
      */
     public Geometries(Intersectable... geometries) {
-        bodies = new LinkedList(List.of(geometries));
+        shapes = new LinkedList(List.of(geometries));
     }
 
     /**
      * @param geometries
      */
     public void add(Intersectable... geometries) {
-        bodies.add((Intersectable) List.of(geometries));
+        Collections.addAll(shapes,geometries);
     }
+
 
     /**
      * @param ray
@@ -43,27 +45,19 @@ public class Geometries implements Intersectable {
     @Override
     public List<Point> findIntersections(Ray ray) {
 
-        boolean is_have_intersections = false;
+        List<Point> result  = null;
 
-        for (Intersectable intersect : bodies) {
-            if (intersect.findIntersections(ray) != null) {
-                is_have_intersections = true;
-                break;
+        for (Intersectable intersect : shapes) {
+            List<Point> pointsList = intersect.findIntersections(ray);
+            if(pointsList != null){
+                if(result == null){
+                    result = new LinkedList<>();
+                }
+                result.addAll(pointsList);
             }
         }
 
-        if (is_have_intersections) {
-            List<Point> listIntersect = new LinkedList();
-
-            for (Intersectable intersect : bodies) {
-                for (Point point : intersect.findIntersections(ray))
-                    if (point != null) {
-                        listIntersect.add(point);
-                    }
-            }
-            return listIntersect;
-        }
-        return null;
+        return result;
     }
 
 }

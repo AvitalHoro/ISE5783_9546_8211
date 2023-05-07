@@ -90,6 +90,19 @@ public class Camera {
         this.vRight = vTo.crossProduct(vUp).normalize();
     }
     //endregion
+    /**
+     * Cast ray from camera in order to color a pixel
+     *
+     * @param nX   - resolution on X axis (number of pixels in row)
+     * @param nY   - resolution on Y axis (number of pixels in column)
+     * @param icol - pixel's column number (pixel index in row)
+     * @param jrow - pixel's row number (pixel index in column)
+     */
+    private void castRay(int nX, int nY, int icol, int jrow) {
+        Ray ray = constructRay(nX, nY, jrow, icol);
+        Color pixelColor = rayTracer.traceRay(ray);
+        imageWriter.writePixel(jrow, icol, pixelColor);
+    }
 
     //region constructRay
 
@@ -127,19 +140,30 @@ public class Camera {
      *
      * @throws MissingResourceException if one of the fields are uninitialized
      */
-    public void renderImage() throws MissingResourceException {
-        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) { //default values
-            throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
-        }
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                imageWriter.writePixel(j, i, //                                             // for each pixel (j,i)
-                        rayTracer.traceRay( //                                           // find the color of the pixel using
-                                constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i)));  // construction of a ray through the pixel
-                // and intersecting with the geometries
+
+    public Camera renderImage() {
+        try {
+            if (imageWriter == null) {
+                throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
             }
+            if (rayTracer == null) {
+                throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
+            }
+            int nX = imageWriter.getNx();
+            int nY = imageWriter.getNy();
+            //rendering the image
+            for (int i = 0; i < nY; i++) {
+                for (int j = 0; j < nX; j++) {
+                    castRay(nX, nY, i, j);
+                }
+            }
+//            }
+        } catch (MissingResourceException e) {
+            throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
         }
+        return this;
     }
+
     //endregion
 
     //region printGrid
