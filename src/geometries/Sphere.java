@@ -9,7 +9,8 @@ import java.util.List;
 
 import static primitives.Util.*;
 
-public class Sphere extends RadialGeometry{
+public class Sphere extends RadialGeometry
+{
     /** sphere class extends RadialGeometry and represents the center in Point
      * @param center - the center point of the sphere
      */
