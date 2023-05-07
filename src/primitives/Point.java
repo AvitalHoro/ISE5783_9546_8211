@@ -11,7 +11,7 @@ public class Point {
     /** constructor to initialize Point based Double3
      * @param xyz
      */
-    Point(Double3 xyz) {
+    public Point(Double3 xyz) {
         this.xyz = xyz;
     }
 

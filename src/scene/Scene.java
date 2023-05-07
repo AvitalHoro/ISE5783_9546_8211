@@ -6,10 +6,10 @@ import lighting.AmbientLight;
 import primitives.Color;
 
 public class Scene {
-    String name;
-    Color background;
-    AmbientLight ambientLight;
-    Geometries geometries;
+    public String name;
+    public Color background;
+    public AmbientLight ambientLight;
+    public Geometries geometries;
     /**
      * construct a scene. giving default values to all the fields
      */
