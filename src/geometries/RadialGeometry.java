@@ -1,7 +1,7 @@
 package geometries;
 
 //Interface for a circular geometric body (Temporary)
-public abstract class RadialGeometry implements Geometry {
+public abstract class RadialGeometry extends Geometry {
     /** RadialGeometry abstract class represents circular geometric body
      * @param radius
      */

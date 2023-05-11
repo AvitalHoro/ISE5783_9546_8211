@@ -32,9 +32,13 @@ public class Tube extends RadialGeometry {
         this.axisRay = axisRay;
     }
 
+    /**
+     *
+     * @param ray ray intersecting the geometry
+     * @return
+     */
     @Override
-    public List<Point> findIntersections(Ray ray) {
-
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         Point pa = this.axisRay.getP0();
@@ -87,12 +91,11 @@ public class Tube extends RadialGeometry {
 
         //takes all positive solutions
         if (t1 > 0 && t2 > 0)
-            return List.of(ray.getPoint(t1),ray.getPoint(t2));
-        if (t1 > 0) return List.of(ray.getPoint(t1));
-        if (t2 > 0) return List.of(ray.getPoint(t2));
+            return List.of(new GeoPoint(this, ray.getPoint(t1)),new GeoPoint(this, ray.getPoint(t2)));
+        if (t1 > 0) return List.of(new GeoPoint(this, ray.getPoint(t1)));
+        if (t2 > 0) return List.of(new GeoPoint(this, ray.getPoint(t2)));
 
         return null; //if there are no positive solutions
-
     }
 
 

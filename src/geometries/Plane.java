@@ -10,7 +10,7 @@ import static primitives.Util.*;
 
 
 
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     /**Plane class represents a plane by a point and the normal vector
      * @param q0
      * @param normal
@@ -38,8 +38,13 @@ public class Plane implements Geometry {
         normal=(v1.crossProduct(v2)).normalize();
     }
 
+    /**
+     *
+     * @param ray ray intersecting the geometry
+     * @return
+     */
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
 
@@ -65,11 +70,10 @@ public class Plane implements Geometry {
         if(t<=0)
             return null;
 
-        Point intersection_point = ray.getPoint(t);
+        GeoPoint intersection_point = new GeoPoint(this, ray.getPoint(t));
 
 
-        return List.of(intersection_point);
-    }
+        return List.of(intersection_point);    }
 
     @Override
     public Vector getNormal(Point point) {

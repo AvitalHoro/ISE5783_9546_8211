@@ -43,4 +43,19 @@ public class Circle extends RadialGeometry {
         planeIntersection.add(p);
         return planeIntersection;
     }
+
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<GeoPoint> planeIntersection = this.plane.findGeoIntersectionsHelper(ray);
+        if (planeIntersection == null)
+            return null;
+
+        GeoPoint p = new GeoPoint(this, planeIntersection.get(0).point);
+
+        if (alignZero(p.point.distanceSquared(this.center) - this.radius * this.radius) >= 0)
+            return null;
+
+        planeIntersection = new ArrayList<>();
+        planeIntersection.add(p);
+        return planeIntersection;    }
 }
