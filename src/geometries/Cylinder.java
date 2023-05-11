@@ -25,36 +25,42 @@ public class Cylinder extends Tube {
         this.height = height;
     }
 
-    @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> helpIntersections = super.findIntersections(ray);
+    /**
+     *
+     * @param ray
+     * @param maxDistance
+     * @return
+     */
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> helpIntersections = super.findGeoIntersectionsHelper(ray);
 
-        List<Point> pointList = new ArrayList<>();
+        List<GeoPoint> pointList = new ArrayList<>();
 
-        if (helpIntersections != null) {
-            for (Point my_point : helpIntersections) {
-                Point point = my_point;
+        if(helpIntersections != null) {
+            for (GeoPoint geoPoint : helpIntersections) {
+                Point point = geoPoint.point;
                 double projection = point.subtract(axisRay.getP0()).dotProduct(axisRay.getDir());
                 if (alignZero(projection) > 0 && alignZero(projection - this.height) < 0)
-                    pointList.add(point);
+                    pointList.add(new GeoPoint(this, point));
             }
         }
 
         // intersect with base
         Circle base = new Circle(axisRay.getP0(), radius, axisRay.getDir());
-        helpIntersections = base.findIntersections(ray);
-        if (helpIntersections != null)
-            pointList.add(helpIntersections.get(0));
+        helpIntersections = base.findGeoIntersectionsHelper(ray);
+        if(helpIntersections != null)
+            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
 
         base = new Circle(axisRay.getPoint(height), radius, axisRay.getDir());
-        helpIntersections = base.findIntersections(ray);
-        if (helpIntersections != null)
-            pointList.add(helpIntersections.get(0));
+        helpIntersections = base.findGeoIntersectionsHelper(ray);
+        if(helpIntersections != null)
+            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
 
         if (pointList.size() == 0)
             return null;
         return pointList;
     }
+    //endregion
 
     @Override
     public Vector getNormal(Point point) {
