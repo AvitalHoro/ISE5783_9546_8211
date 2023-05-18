@@ -5,7 +5,7 @@ import primitives.Material;
 import primitives.Point;
 import primitives.Vector;
 
-public abstract class Geometry extends Intersectable {
+public abstract class Geometry extends Intersectable{
 
    protected Color emission = Color.BLACK;
 

@@ -43,7 +43,7 @@ class PlaneTest {
 
     /** Test method for {@link Plane#getNormal(Point)} (primitives.Point)}. */
     @Test
-    void testgetNormal() {
+    void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here - using a quad
         Point[] pts =
@@ -58,6 +58,16 @@ class PlaneTest {
         // ensure the result is orthogonal to all the edges
         assertTrue(Util.isZero(result.dotProduct(pts[0].subtract(pts[1]))),
                 "Palne's normal is not orthogonal to the plane");
+    }
+
+    /**
+     * Test method for {@link Plane#getNormal(Point)}.
+     */
+    @Test
+    void testGetNormal2() {
+        Plane plane = new Plane(new Point(1,0,0),new Point(0,1,0),new Point(0,0,1));
+        double n = Math.sqrt(1d/3);
+        assertEquals(new Vector(n,n,n),plane.getNormal(new Point(0,0,1)),"This normal bad for plane");
     }
 
     /** Test method for {@link Plane#findIntersections(Ray)} (primitives.Ray)}. */

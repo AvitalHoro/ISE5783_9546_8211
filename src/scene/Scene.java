@@ -64,4 +64,12 @@ public class Scene {
         this.lights = lights;
         return this;
     }
+
+    /**
+     * Getter for the geometries structures in the scene.
+     * @return The geometries object.
+     */
+    public Geometries getGeometries() {
+        return this.geometries;
+    }
 }

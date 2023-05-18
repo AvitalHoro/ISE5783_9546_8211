@@ -5,6 +5,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -31,35 +32,93 @@ public class Cylinder extends Tube {
      * @param maxDistance
      * @return
      */
+    @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        List<GeoPoint> helpIntersections = super.findGeoIntersectionsHelper(ray);
+        // The procedure is as follows:
+        // P1 and P2 in the cylinder, the center of the bottom and upper bases
+        Point p1 = axisRay.getP0();
+        Point p2 = axisRay.getPoint(height);
+        Vector Va = axisRay.getDir();
 
-        List<GeoPoint> pointList = new ArrayList<>();
 
-        if(helpIntersections != null) {
-            for (GeoPoint geoPoint : helpIntersections) {
-                Point point = geoPoint.point;
-                double projection = point.subtract(axisRay.getP0()).dotProduct(axisRay.getDir());
-                if (alignZero(projection) > 0 && alignZero(projection - this.height) < 0)
-                    pointList.add(new GeoPoint(this, point));
+        List<GeoPoint> list = super.findGeoIntersectionsHelper(ray,maxDistance);
+
+        // the intersections with the cylinder
+        List<GeoPoint> result = new LinkedList<>();
+
+        // Step 1 - checking if the intersections with the tube are points on the cylinder
+        if (list != null) {
+            for (GeoPoint p : list) {
+                if (Va.dotProduct(p.point.subtract(p1)) > 0 && Va.dotProduct(p.point.subtract(p2)) < 0)
+                    result.add(0, p);
             }
         }
 
-        // intersect with base
-        Circle base = new Circle(axisRay.getP0(), radius, axisRay.getDir());
-        helpIntersections = base.findGeoIntersectionsHelper(ray);
-        if(helpIntersections != null)
-            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
+        // Step 2 - checking the intersections with the bases
 
-        base = new Circle(axisRay.getPoint(height), radius, axisRay.getDir());
-        helpIntersections = base.findGeoIntersectionsHelper(ray);
-        if(helpIntersections != null)
-            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
+        // cannot be more than 2 intersections
+        if(result.size() < 2) {
+            //creating 2 planes for the 2 bases
+            Plane bottomBase = new Plane(p1, Va);
+            Plane upperBase = new Plane(p2, Va);
+            GeoPoint p;
 
-        if (pointList.size() == 0)
-            return null;
-        return pointList;
+            // ======================================================
+            // intersection with the bases:
+
+            // intersections with the bottom bases
+            list = bottomBase.findGeoIntersections(ray);
+
+            if (list != null) {
+                p = list.get(0);
+                // checking if the intersection is on the cylinder base
+                if (p.point.distanceSquared(p1) < radius * radius)
+                    result.add(p);
+            }
+
+            // intersections with the upper bases
+            list = upperBase.findGeoIntersections(ray);
+
+            if (list != null) {
+                p = list.get(0);
+                //checking if the intersection is on the cylinder base
+                if (p.point.distanceSquared(p2) < radius * radius)
+                    result.add(p);
+            }
+        }
+        // return null if there are no intersections.
+        return result.size() == 0 ? null : result;
     }
+
+//    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+//        List<GeoPoint> helpIntersections = super.findGeoIntersectionsHelper(ray);
+//
+//        List<GeoPoint> pointList = new ArrayList<>();
+//
+//        if(helpIntersections != null) {
+//            for (GeoPoint geoPoint : helpIntersections) {
+//                Point point = geoPoint.point;
+//                double projection = point.subtract(axisRay.getP0()).dotProduct(axisRay.getDir());
+//                if (alignZero(projection) > 0 && alignZero(projection - this.height) < 0)
+//                    pointList.add(new GeoPoint(this, point));
+//            }
+//        }
+//
+//        // intersect with base
+//        Circle base = new Circle(axisRay.getP0(), radius, axisRay.getDir());
+//        helpIntersections = base.findGeoIntersectionsHelper(ray);
+//        if(helpIntersections != null)
+//            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
+//
+//        base = new Circle(axisRay.getPoint(height), radius, axisRay.getDir());
+//        helpIntersections = base.findGeoIntersectionsHelper(ray);
+//        if(helpIntersections != null)
+//            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
+//
+//        if (pointList.size() == 0)
+//            return null;
+//        return pointList;
+//    }
     //endregion
 
     @Override

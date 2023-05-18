@@ -1,6 +1,5 @@
 package geometries;
 
-import primitives.Point;
 import primitives.Ray;
 
 import java.util.Collections;
@@ -10,9 +9,9 @@ import java.util.List;
 public class Geometries extends Intersectable {
 
     /**
-     *
+     * A private list of intersectable.
      */
-    List<Intersectable> shapes;
+    private List<Intersectable> shapes;
 
     /**
      * empty constructor
@@ -39,24 +38,45 @@ public class Geometries extends Intersectable {
 
 
     /**
-     * @param ray
-     * @return list of intersection points
+     * If the ray intersects with one of the geometries, add the intersection points to the list of intersection points
+     *
+     * @param ray The ray that intersects the geometry.
+     * @return A list of GeoPoints
      */
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<GeoPoint> result = null;
-        for (Intersectable item : shapes) {
-            List<GeoPoint> itemList = item.findGeoIntersectionsHelper(ray);
-            if (itemList != null) {
-                if (result == null) {
-                    result = new LinkedList<>();
-                }
-                result.addAll(itemList);
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> intersection = null;
+        for (var geometry : this.shapes) {
+            List<GeoPoint> geometryIntersection = geometry.findGeoIntersections(ray);
+
+            if (geometryIntersection != null) {
+                if (intersection == null)
+                    intersection = new LinkedList<>();
+                intersection.addAll(geometryIntersection);
             }
         }
-        return result;
-
+        return intersection;
     }
+
+//    /**
+//     * @param ray
+//     * @return list of intersection points
+//     */
+//    @Override
+//    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+//        List<GeoPoint> result = null;
+//        for (Intersectable item : shapes) {
+//            List<GeoPoint> itemList = item.findGeoIntersectionsHelper(ray);
+//            if (itemList != null) {
+//                if (result == null) {
+//                    result = new LinkedList<>();
+//                }
+//                result.addAll(itemList);
+//            }
+//        }
+//        return result;
+//
+//    }
 }
 
 

@@ -13,7 +13,7 @@ import static primitives.Util.alignZero;
  * implementation of the abstract class RayTracerBase
  */
 public class RayTracerBasic extends RayTracerBase {
-
+    private static final double DELTA = 0.1;
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
@@ -110,6 +110,30 @@ public class RayTracerBasic extends RayTracerBase {
     }
     //endregion
 
+    /**
+     * function will check if point is unshaded
+     *
+     * @param gp geometry point to check
+     * @param l  light vector
+     * @param n  normal vector
+     * @return true if unshaded
+     */
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n, LightSource lightSource, double nv) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+        Point point = gp.point.add(epsVector);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
 
+        if (intersections != null) {
+            double distance = lightSource.getDistance(gp.point);
+            for (GeoPoint intersection : intersections) {
+                if (intersection.point.distance(gp.point) < distance)
+                    return false;
+            }
+        }
+
+        return true;
+    }
 
 }
