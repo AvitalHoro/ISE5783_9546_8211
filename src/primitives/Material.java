@@ -18,23 +18,24 @@ public class Material {
     public Double3 Ks = Double3.ZERO;
 
     /**
-     *  Shininess - how shiny the material is
-     */
-    public int nShininess = 0;
-
-    /**
      *  Kt - transparency component
      * 0.0 is opaque
      * 1.0 is clear
      */
-    //public Double3 Kt = Double3.ZERO;
+    public Double3 Kt = Double3.ZERO;
 
     /**
      *  Kr - reflection component
      * 0.0 is matte
      * 1.0 is very reflexive
      */
-    //public Double3 Kr = Double3.ZERO;
+    public Double3 Kr = Double3.ZERO;
+
+    /**
+     *  Shininess - how shiny the material is
+     */
+    public int nShininess = 0;
+
 
     //*********Setters*********
 
@@ -93,42 +94,42 @@ public class Material {
      * @param kt typed double
      * @return this material
      */
-/*    public Material setKt(double kt) {
+    public Material setKt(double kt) {
         this.Kt = new Double3(kt);
         return this;
     }
 
-    *//**
-     * set (According to the builder design template)
+     /** set (According to the builder design template)
      * @param kr typed double
      * @return this material
-     *//*
+     */
     public Material setKr(double kr) {
         this.Kr = new Double3(kr);
         return this;
     }
 
-    *//**
+
+    /**
      * set (According to the builder design template)
      * @param kt typed Double3
      * @return this material
-     *//*
+     */
     public Material setKt(Double3 kt) {
         this.Kt = kt;
         return this;
     }
 
-    *//**
+     /**
      * set (According to the builder design template)
      * @param kr typed Double3
      * @return this material
-     *//*
+     */
     public Material setKr(Double3 kr) {
         this.Kr = kr;
         return this;
-    }*/
+    }
 
-/*    //*********Getters*********
+    //*********Getters*********
 
     public Double3 getKs() {
         return Ks;
@@ -148,7 +149,7 @@ public class Material {
 
     public Double3 getKr() {
         return Kr;
-    }*/
+    }
 
 
 }
