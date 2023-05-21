@@ -1,22 +1,24 @@
 package lighting;
 
-import static java.awt.Color.*;
-
+import geometries.Geometry;
+import geometries.Sphere;
+import geometries.Triangle;
 import org.junit.jupiter.api.Test;
-
-import geometries.*;
-import lighting.*;
 import primitives.*;
-import renderer.*;
+import renderer.Camera;
+import renderer.ImageWriter;
+import renderer.RayTracerBasic;
 import scene.Scene;
+
+import static java.awt.Color.*;
 
 /** Test rendering a basic image
  * @author Dan */
 
 public class LightTests {
-    private final Scene          scene1                  = new Scene("Test scene");
-    private final Scene          scene2                  = new Scene("Test scene")
-            .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
+    private final Scene          scene1                  = new Scene.SceneBuilder("Test scene").build();
+    private final Scene          scene2                  = new Scene.SceneBuilder("Test scene")
+            .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15))).build();
 
     private final Camera         camera1                 = new Camera(new Point(0, 0, 1000),
             new Vector(0, 0, -1), new Vector(0, 1, 0))
@@ -66,8 +68,8 @@ public class LightTests {
     /** Produce a picture of a sphere lighted by a directional light */
     @Test
     public void sphereDirectional() {
-        scene1.geometries.add(sphere);
-        scene1.lights.add(new DirectionalLight(sphereLightColor, new Vector(1, 1, -0.5)));
+        scene1.getGeometries().add(sphere);
+        scene1.getLights().add(new DirectionalLight(sphereLightColor, new Vector(1, 1, -0.5)));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereDirectional", 500, 500);
         camera1.setImageWriter(imageWriter) //
@@ -79,8 +81,8 @@ public class LightTests {
     /** Produce a picture of a sphere lighted by a point light */
     @Test
     public void spherePoint() {
-        scene1.geometries.add(sphere);
-        scene1.lights.add(new PointLight(sphereLightColor, sphereLightPosition)
+        scene1.getGeometries().add(sphere);
+        scene1.getLights().add(new PointLight(sphereLightColor, sphereLightPosition)
                 .setKl(0.001).setKq(0.0002));
 
         ImageWriter imageWriter = new ImageWriter("lightSpherePoint", 500, 500);
@@ -93,8 +95,8 @@ public class LightTests {
     /** Produce a picture of a sphere lighted by a spotlight */
     @Test
     public void sphereSpot() {
-        scene1.geometries.add(sphere);
-        scene1.lights.add(new SpotLight(sphereLightColor, sphereLightPosition, new Vector(1, 1, -0.5))
+        scene1.getGeometries().add(sphere);
+        scene1.getLights().add(new SpotLight(sphereLightColor, sphereLightPosition, new Vector(1, 1, -0.5))
                 .setKl(0.001).setKq(0.0001));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 500, 500);
@@ -107,8 +109,8 @@ public class LightTests {
     /** Produce a picture of two triangles lighted by a directional light */
     @Test
     public void trianglesDirectional() {
-        scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new DirectionalLight(trianglesLightColor, trianglesLightDirection));
+        scene2.getGeometries().add(triangle1, triangle2);
+        scene2.getLights().add(new DirectionalLight(trianglesLightColor, trianglesLightDirection));
 
         ImageWriter imageWriter = new ImageWriter("lightTrianglesDirectional", 500, 500);
         camera2.setImageWriter(imageWriter) //
@@ -120,8 +122,8 @@ public class LightTests {
     /** Produce a picture of two triangles lighted by a point light */
     @Test
     public void trianglesPoint() {
-        scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new PointLight(trianglesLightColor, trianglesLightPosition)
+        scene2.getGeometries().add(triangle1, triangle2);
+        scene2.getLights().add(new PointLight(trianglesLightColor, trianglesLightPosition)
                 .setKl(0.001).setKq(0.0002));
 
         ImageWriter imageWriter = new ImageWriter("lightTrianglesPoint", 500, 500);
@@ -134,8 +136,8 @@ public class LightTests {
     /** Produce a picture of two triangles lighted by a spotlight */
     @Test
     public void trianglesSpot() {
-        scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
+        scene2.getGeometries().add(triangle1, triangle2);
+        scene2.getLights().add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
                 .setKl(0.001).setKq(0.0001));
 
         ImageWriter imageWriter = new ImageWriter("lightTrianglesSpot", 500, 500);
@@ -148,8 +150,8 @@ public class LightTests {
     /** Produce a picture of a sphere lighted by a narrow spotlight */
     @Test
     public void sphereSpotSharp() {
-        scene1.geometries.add(sphere);
-        scene1.lights
+        scene1.getGeometries().add(sphere);
+        scene1.getLights()
                 .add(new SpotLight(sphereLightColor, sphereLightPosition, new Vector(1, 1, -0.5))
                         .setNarrowBeam(50).setKl(0.001).setKq(0.00004));
 
@@ -163,8 +165,8 @@ public class LightTests {
     /** Produce a picture of two triangles lighted by a narrow spotlight */
     @Test
     public void trianglesSpotSharp() {
-        scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
+        scene2.getGeometries().add(triangle1, triangle2);
+        scene2.getLights().add(new SpotLight(trianglesLightColor, trianglesLightPosition, trianglesLightDirection)
                 .setNarrowBeam(30).setKl(0.001).setKq(0.00004));
 
         ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSharp", 500, 500);
@@ -179,14 +181,14 @@ public class LightTests {
      */
     @Test
     public void sphereThreeLights() {
-        scene1.geometries.add(sphere);
-        scene1.lights.add(new DirectionalLight(new Color(GRAY),
+        scene1.getGeometries().add(sphere);
+        scene1.getLights().add(new DirectionalLight(new Color(GRAY),
                 new Vector(1, 1, -0.5)));
 
-        scene1.lights.add(new PointLight(new Color(RED),
+        scene1.getLights().add(new PointLight(new Color(RED),
                 new Point(10,10,20)));
 
-        scene1.lights.add(new SpotLight(new Color(PINK) ,
+        scene1.getLights().add(new SpotLight(new Color(PINK) ,
                 new Point(100,-10,-50),
                 new Vector(-1, 0, -0.5)));
 
@@ -199,14 +201,14 @@ public class LightTests {
 
         // *********************************************************************************
 
-        scene1.lights.clear();
-        scene1.lights.add(new DirectionalLight(new Color(18,170,32),
+        scene1.getLights().clear();
+        scene1.getLights().add(new DirectionalLight(new Color(18,170,32),
                 new Vector(1, 1, -0.5)));
 
-        scene1.lights.add(new PointLight(new Color(242,114,114),
+        scene1.getLights().add(new PointLight(new Color(242,114,114),
                 new Point(10,10,20)));
 
-        scene1.lights.add(new SpotLight(new Color(YELLOW),
+        scene1.getLights().add(new SpotLight(new Color(YELLOW),
                 sphereLightPosition,
                 new Vector(1, 1, -0.5)).setKl(2));
 
@@ -219,14 +221,14 @@ public class LightTests {
         // *********************************************************************************
 
 
-        scene1.lights.clear();
-        scene1.lights.add(new DirectionalLight(new Color(GREEN),
+        scene1.getLights().clear();
+        scene1.getLights().add(new DirectionalLight(new Color(GREEN),
                 new Vector(1, 1, -0.5)));
 
-        scene1.lights.add(new PointLight(new Color(RED).reduce(2),
+        scene1.getLights().add(new PointLight(new Color(RED).reduce(2),
                 new Point(10,10,20)));
 
-        scene1.lights.add(new SpotLight(new Color(ORANGE) ,
+        scene1.getLights().add(new SpotLight(new Color(ORANGE) ,
                 new Point(300,-10,-50),
                 new Vector(-1, -1, -0.5)));
 
@@ -242,14 +244,14 @@ public class LightTests {
      */
     @Test
     public void trianglesThreeLight() {
-        scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new DirectionalLight(new Color(18,170,32),
+        scene2.getGeometries().add(triangle1, triangle2);
+        scene2.getLights().add(new DirectionalLight(new Color(18,170,32),
                 trianglesLightDirection));
 
-        scene2.lights.add(new PointLight(new Color(255,110,110),
+        scene2.getLights().add(new PointLight(new Color(255,110,110),
                 new Point(40, 5, -100)));
 
-        scene2.lights.add(new SpotLight(new Color(YELLOW) ,
+        scene2.getLights().add(new SpotLight(new Color(YELLOW) ,
                 trianglesLightPosition,
                 new Vector(1, 1, -0.5)));
 
@@ -262,14 +264,14 @@ public class LightTests {
 
         // *********************************************************************************
 
-        scene2.lights.clear();
-        scene2.lights.add(new DirectionalLight(new Color(RED),
+        scene2.getLights().clear();
+        scene2.getLights().add(new DirectionalLight(new Color(RED),
                 new Vector(-1,5,2)));
 
-        scene2.lights.add(new PointLight(new Color(GREEN).reduce(2),
+        scene2.getLights().add(new PointLight(new Color(GREEN).reduce(2),
                 new Point(0,-10,-100)));
 
-        scene2.lights.add(new SpotLight(new Color(YELLOW) ,
+        scene2.getLights().add(new SpotLight(new Color(YELLOW) ,
                 new Point(30, 60, -100),
                 new Vector(2, -1, -1)));
 
@@ -281,14 +283,14 @@ public class LightTests {
 
         // *********************************************************************************
 
-        scene2.lights.clear();
-        scene2.lights.add(new DirectionalLight(new Color(RED),
+        scene2.getLights().clear();
+        scene2.getLights().add(new DirectionalLight(new Color(RED),
                 new Vector(-2,2,2)));
 
-        scene2.lights.add(new PointLight(new Color(27,233,249),
+        scene2.getLights().add(new PointLight(new Color(27,233,249),
                 new Point(0,0,0)));
 
-        scene2.lights.add(new SpotLight(new Color(YELLOW) ,
+        scene2.getLights().add(new SpotLight(new Color(YELLOW) ,
                 new Point(60, 50, 200),
                 new Vector(1, -2, 0.5)));
 

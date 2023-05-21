@@ -24,11 +24,11 @@ public class RayTracerBasic extends RayTracerBase {
     //region traceRay
     @Override
     public Color traceRay(Ray ray) {
-        List<GeoPoint> intersectionPoints = scene.geometries.findGeoIntersections(ray);
+        List<GeoPoint> intersectionPoints = scene.getGeometries().findGeoIntersections(ray);
         if (intersectionPoints == null)
-            return this.scene.background;
+            return this.scene.getBackground();
         GeoPoint geoPoint = ray.findClosestGeoPoint(intersectionPoints);
-        return geoPoint == null ? scene.background : calcColor(geoPoint, ray);
+        return geoPoint == null ? scene.getBackground() : calcColor(geoPoint, ray);
     }
     //endregion
 
@@ -44,7 +44,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcColor(GeoPoint closestPoint, Ray ray) {
         return calcColor(closestPoint, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K)
-                .add(scene.ambientLight.getIntensity());
+                .add(scene.getAmbientLight().getIntensity());
     }
 
 
@@ -101,7 +101,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcGlobalEffect(Ray ray, int level, Double3 kx, Double3 kkx) {
         GeoPoint gp = findClosestIntersection(ray);
-        return (gp == null ? scene.background : calcColor(gp, ray, level-1, kkx)
+        return (gp == null ? scene.getBackground() : calcColor(gp, ray, level-1, kkx)
         ).scale(kx);
     }
 
@@ -119,7 +119,7 @@ public class RayTracerBasic extends RayTracerBase {
         Double3 ks = geoPoint.geometry.getMaterial().Ks;
         Color color = Color.BLACK;                                  // the base color
 
-        for (LightSource lightSource : scene.lights) {
+        for (LightSource lightSource : scene.getLights()) {
             Vector l = lightSource.getL(geoPoint.point);            // vec from the lightSource to the geometry
             double nl = alignZero(n.dotProduct(l));
 

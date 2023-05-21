@@ -1,7 +1,7 @@
 package scene;
 
+import com.google.gson.Gson;
 import geometries.Geometries;
-import geometries.Intersectable;
 import lighting.AmbientLight;
 import lighting.LightSource;
 import primitives.Color;
@@ -10,66 +10,96 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Scene {
-    public String name;
-    public Color background;
-    public AmbientLight ambientLight;
 
-    public Geometries geometries;
+    private final String name;
+    private final Color background;
+    private final Geometries geometries;
+    private final List<LightSource> lights;
+    private AmbientLight ambientLight;
 
-    public List<LightSource> lights =  new LinkedList<>();
-    /**
-     * construct a scene. giving default values to all the fields
-     */
-    public Scene(String name) {
-        this.geometries = new Geometries();
-        this.name = name;
-        this.background = Color.BLACK;
-        this.ambientLight = AmbientLight.NONE;
+    public String getName() {
+        return name;
     }
-    //endregion
 
-    //region setBackground
-    public Scene setBackground(Color background) {
-        this.background = background;
-        return this;
+    public Color getBackground() {
+        return background;
     }
-    //endregion
 
-    //region setGeometries
-    public Scene setGeometries(Geometries geometries) {
-        this.geometries = geometries;
-        return this;
+    public AmbientLight getAmbientLight() {
+        return ambientLight;
     }
-    //endregion
 
-    //region addGeometries
-    public Scene addGeometry(Intersectable geometry){
-        geometries.add(geometry);
-        return this;
+    public Geometries getGeometries() {
+        return geometries;
     }
-    //endregion
 
-    //region setAmbientLight
+    public List<LightSource> getLights() {
+        return lights;
+    }
+
     public Scene setAmbientLight(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
         return this;
     }
 
-    /**
-     *
-     * @param lights
-     * @return this scene
-     */
-    public Scene setLights(List<LightSource> lights) {
-        this.lights = lights;
-        return this;
+    private Scene(SceneBuilder builder) {
+        name = builder.name;
+        background = builder.background;
+        ambientLight = builder.ambientLight;
+        geometries = builder.geometries;
+        lights = builder.lights;
     }
 
-    /**
-     * Getter for the geometries structures in the scene.
-     * @return The geometries object.
-     */
-    public Geometries getGeometries() {
-        return this.geometries;
+
+    public void writeGsonFile(String filename){
+        Gson gson= new Gson();
+
+    }
+
+    public static class SceneBuilder {
+
+        private final String name;
+        private List<LightSource> lights = new LinkedList<>();
+        private Color background = Color.BLACK;
+        private AmbientLight ambientLight = AmbientLight.NONE;
+        private Geometries geometries = new Geometries();
+
+        public SceneBuilder(String name) {
+            this.name = name;
+        }
+
+        public SceneBuilder setBackground(Color background) {
+            this.background = background;
+            return this;
+        }
+
+        public SceneBuilder setLights(List<LightSource> lights) {
+            this.lights = lights;
+            return this;
+        }
+
+        public SceneBuilder setAmbientLight(AmbientLight ambientLight) {
+            this.ambientLight = ambientLight;
+            return this;
+        }
+
+        public SceneBuilder setGeometries(Geometries geometries) {
+            this.geometries = geometries;
+            return this;
+        }
+
+        public Scene build() {
+            // validateObject(scene);
+            return new Scene(this);
+        }
+
+        private void validateObject(Scene scene) {
+            //nothing to do
+        }
+
+        public SceneBuilder readXmlFile(String filename) {
+            //todo
+            return this;
+        }
     }
 }
