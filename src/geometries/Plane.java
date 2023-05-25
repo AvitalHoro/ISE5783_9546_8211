@@ -42,42 +42,6 @@ public class Plane extends Geometry {
         return normal;
     }
 
-//    /**
-//     *
-//     * @param ray ray intersecting the geometry
-//     * @return
-//     */
-//    @Override
-//    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-//        Point p0 = ray.getP0();
-//        Vector v = ray.getDir();
-//
-//        Vector n = normal;
-//
-//        if (q0.equals(p0))
-//            return null;
-//
-//        Vector p0_q = q0.subtract(p0);
-//
-//        double nemurator = alignZero(n.dotProduct(p0_q));
-//
-//        if (isZero(nemurator))
-//            return null;
-//
-//        double denominator = alignZero(n.dotProduct(v));
-//
-//        if (isZero(denominator))
-//            return null;
-//
-//        double t = alignZero(nemurator / denominator);
-//
-//        if(t<=0)
-//            return null;
-//
-//        GeoPoint intersection_point = new GeoPoint(this, ray.getPoint(t));
-//
-//
-//        return List.of(intersection_point);    }
 
     /**
      * Finds the intersection points of the ray with the surface of the object

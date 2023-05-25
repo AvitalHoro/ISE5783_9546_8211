@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Ray {
 
+    //parameter for size of first moving rays for shading rays
     private static final double DELTA = 0.1;
 
     /** Ray class represents ray with Point and Vector
@@ -27,15 +28,15 @@ public class Ray {
         this.dir = dir.normalize();
     }
     /**
-            * Constructor for ray deflected by epsilon
-     *
-             * @param p0 origin
-     * @param n normal vector
-     * @param dir direction
+     * Constructor that moves the ray by DELTA
+     * @param p0 point
+     * @param direction direction (must be normalized)
+     * @param normal normal
      */
-    public Ray(Point p0, Vector n, Vector dir) {
-        this.p0 = p0.add(n.scale(n.dotProduct(dir) > 0 ? DELTA : -DELTA));
-        this.dir = dir.normalize();
+    public Ray(Point p0, Vector direction, Vector normal) {
+        Vector delta = normal.scale(normal.dotProduct(direction) > 0 ? DELTA : - DELTA);
+        this.p0 = p0.add(delta);
+        this.dir = direction;
     }
     //get p0
     public Point getP0() {

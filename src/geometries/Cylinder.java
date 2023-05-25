@@ -90,37 +90,6 @@ public class Cylinder extends Tube {
         return result.size() == 0 ? null : result;
     }
 
-//    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-//        List<GeoPoint> helpIntersections = super.findGeoIntersectionsHelper(ray);
-//
-//        List<GeoPoint> pointList = new ArrayList<>();
-//
-//        if(helpIntersections != null) {
-//            for (GeoPoint geoPoint : helpIntersections) {
-//                Point point = geoPoint.point;
-//                double projection = point.subtract(axisRay.getP0()).dotProduct(axisRay.getDir());
-//                if (alignZero(projection) > 0 && alignZero(projection - this.height) < 0)
-//                    pointList.add(new GeoPoint(this, point));
-//            }
-//        }
-//
-//        // intersect with base
-//        Circle base = new Circle(axisRay.getP0(), radius, axisRay.getDir());
-//        helpIntersections = base.findGeoIntersectionsHelper(ray);
-//        if(helpIntersections != null)
-//            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
-//
-//        base = new Circle(axisRay.getPoint(height), radius, axisRay.getDir());
-//        helpIntersections = base.findGeoIntersectionsHelper(ray);
-//        if(helpIntersections != null)
-//            pointList.add(new GeoPoint(this, helpIntersections.get(0).point));
-//
-//        if (pointList.size() == 0)
-//            return null;
-//        return pointList;
-//    }
-    //endregion
-
     @Override
     public Vector getNormal(Point point) {
 

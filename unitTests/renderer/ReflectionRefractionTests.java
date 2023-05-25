@@ -72,7 +72,7 @@ public class ReflectionRefractionTests {
                 .writeToImage();
     }
 
-    /** Produce a picture of a two triangles lighted by a spot light with a
+    /** Produce a picture of two triangles lighted by a spot light with a
      * partially
      * transparent Sphere producing partial shadow */
     @Test

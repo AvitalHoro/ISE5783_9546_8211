@@ -9,34 +9,43 @@ import java.util.Objects;
 public abstract class Intersectable {
     protected Object intersectables;
 
-    /** Intersectable interface for geometry bodies to calculate intersections points between ray and body
-     * @param ray
-     * @return List<Point>
+    /**
+     * find all intersection points {@link Point}
+     * that intersect with a specific ray{@link Ray}
+     * @param ray ray pointing towards the graphic object
+     * @return immutable list of intersection points {@link Point}
      */
     public List<Point> findIntersections(Ray ray) {
         var geoList = findGeoIntersections(ray);
-        return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
+        return geoList == null ? null
+                : geoList.stream().map(gp -> gp.point).toList();
+    }
+
+    /**
+     * find all intersection points {@link Point}
+     * that intersect with a specific ray{@link Ray} in a range of distance
+     * @param ray ray pointing towards the graphic object
+     * @param maxDistance the maximum distance between the point to the start of the ray
+     * @return immutable list of intersection geo points {@link GeoPoint}
+     */
+    public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
+        return findGeoIntersectionsHelper(ray, maxDistance);
     }
     /**
-     * This function returns a list of all the intersections of the ray with the geometry of the scene
-     *
-     * @param ray The ray to find intersections with.
-     * @return A list of GeoPoints.
+     * find all intersection points {@link Point}
+     * that intersect with a specific ray{@link Ray}
+     * @param ray ray pointing towards the graphic object
+     * @return immutable list of intersection geo points {@link GeoPoint}
      */
     public final List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
     }
 
-    public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
-        return findGeoIntersectionsHelper(ray, maxDistance);
-    }
-
     /**
-     * Finds the intersection points of the ray with the surface of the object
-     *
-     * @param ray The ray to intersect with the GeoPoint.
-     * @param maxDistance The maximum distance from the source of the ray to intersect with.
-     * @return A list of GeoPoints that are the intersections of the ray with the object.
+     * helper of findGeoIntersections
+     * @param ray ray pointing towards the graphic object
+     * @param maxDistance the maximum distance between the point to the start of the ray
+     * @return immutable list of intersection geo points {@link GeoPoint}
      */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 

@@ -30,42 +30,12 @@ public class Circle extends RadialGeometry {
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        List<GeoPoint> planePoints = plane.findGeoIntersectionsHelper(ray,maxDistance);
-        if(planePoints== null)
+        List<GeoPoint> planePoints = plane.findGeoIntersectionsHelper(ray, maxDistance);
+        if (planePoints == null)
             return null;
-        planePoints.removeIf(gp -> gp.point.distance(center)> radius);
-        if(planePoints.isEmpty())
+        planePoints.removeIf(gp -> gp.point.distance(center) > radius);
+        if (planePoints.isEmpty())
             return null;
-        return List.of(new GeoPoint(this,planePoints.get(0).point));
+        return List.of(new GeoPoint(this, planePoints.get(0).point));
     }
-//    @Override
-//    public List<Point> findIntersections(Ray ray) {
-//        List<Point> planeIntersection = this.plane.findIntersections(ray);
-//        if (planeIntersection == null)
-//            return null;
-//
-//        Point p = planeIntersection.get(0);
-//
-//        if (alignZero(p.distanceSquared(this.center) - this.radius * this.radius) >= 0)
-//            return null;
-//
-//        planeIntersection = new ArrayList<>();
-//        planeIntersection.add(p);
-//        return planeIntersection;
-//    }
-
-//    @Override
-//    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-//        List<GeoPoint> planeIntersection = this.plane.findGeoIntersectionsHelper(ray);
-//        if (planeIntersection == null)
-//            return null;
-//
-//        GeoPoint p = new GeoPoint(this, planeIntersection.get(0).point);
-//
-//        if (alignZero(p.point.distanceSquared(this.center) - this.radius * this.radius) >= 0)
-//            return null;
-//
-//        planeIntersection = new ArrayList<>();
-//        planeIntersection.add(p);
-//        return planeIntersection;    }
 }

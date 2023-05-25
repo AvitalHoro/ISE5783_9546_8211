@@ -45,53 +45,6 @@ public class Sphere extends RadialGeometry
         return point.subtract(center).normalize();
     }
 
-//    /**
-//     *
-//     * @param ray
-//     * @return GeoPoint intersection if they exist
-//     */
-//    @Override
-//    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-//        Point p0 = ray.getP0();
-//        Vector v = ray.getDir();
-//
-//        if(p0.equals(center))
-//            return List.of(new GeoPoint(this, center.add(v.scale(radius))));
-//        Vector u = center.subtract(p0);
-//
-//        double tm = alignZero(v.dotProduct(u));
-//        double d = alignZero(Math.sqrt(u.lengthSquared() - tm * tm));
-//
-//        if(d>=radius)
-//            return null;
-//
-//        double th = alignZero(Math.sqrt(radius*radius -d*d));
-//        if (th<=0)
-//            return null;
-//
-//        double t1 = alignZero(tm + th);
-//        double t2 = alignZero(tm - th);
-//
-//        if (t1 > 0 && t2 > 0)
-//        {
-//            GeoPoint p1 = new GeoPoint(this, p0.add(v.scale(t1)));
-//            GeoPoint p2 = new GeoPoint(this,p0.add(v.scale(t2)));
-//            return List.of(p1,p2);
-//        }
-//        if (t1 > 0)
-//        {
-//            GeoPoint p1 = new GeoPoint(this, ray.getPoint(t1));
-//            return List.of(p1);
-//        }
-//        if (t2 > 0)
-//        {
-//            GeoPoint p2 = new GeoPoint(this, ray.getPoint(t2));
-//            return List.of(p2);
-//        }
-//
-//        return null;
-//    }
-
     /**
      * Finds the intersection points of the ray with the surface of the object
      *
