@@ -128,7 +128,7 @@ public class RayTracerBasic extends RayTracerBase {
             Vector lightVector = lightSource.getL(geoPoint.point);
             double nl = alignZero(normal.dotProduct(lightVector));
             if (nl * nv > 0) {
-                Double3 ktr = transparency(geoPoint, lightVector, normal, lightSource);
+                Double3 ktr = transparency(geoPoint, lightSource, lightVector, normal);
 
                 if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
                     Color lightIntensity = lightSource.getIntensity(geoPoint.point).scale(ktr);
@@ -218,97 +218,32 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * Determining how much light reach a certain point, blocked by other objects
+     * function will return double that represents transparency
      *
-     * @param gp          the point we want to calculate the transparency for
-     * @param l           vector from the light source
-     * @param n           normal to the point
-     * @param lightSource the light source
-     * @return the transparency of the point
+     * @param geoPoint    geometry point to check
+     * @param lightSource light source
+     * @param l           light vector
+     * @param n           normal vector
+     * @return transparency value
      */
-    private Double3 transparency(GeoPoint gp, Vector l, Vector n, LightSource lightSource) {
+    private Double3 transparency(GeoPoint geoPoint, LightSource lightSource, Vector l, Vector n) {
+
+
         Vector lightDirection = l.scale(-1); // from point to light source
-        //We make sure to move the object by DELTA
-        //int the correct direction
-        //Create a new ray to check shadiness
-        Ray lightRay = new Ray(gp.point, lightDirection, n);
+        Ray lightRay = new Ray(geoPoint.point, lightDirection, n);
+        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay);
 
         Double3 ktr = Double3.ONE;
-        //Find if any geometric object blocks the light
-        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
-        if (intersections == null)
-            return ktr;
-        //For every geometric object in the list, scale by its transparency coefficient
-        for (var geoPoint : intersections) {
-            ktr = ktr.product(geoPoint.geometry.getMaterial().Kt);
-            if (ktr.lowerThan(MIN_CALC_COLOR_K)) return Double3.ZERO;
+        if (intersections == null) return ktr;
+
+        double distance = lightSource.getDistance(geoPoint.point);
+
+        for (GeoPoint intersection : intersections) {
+
+            if (distance > intersection.point.distance(geoPoint.point)) {
+                ktr = ktr.product(intersection.geometry.getMaterial().Kt);
+            }
         }
         return ktr;
     }
-//    /**
-//     * The method checks whether there is any object shading the light source from a
-//     * point
-//     *
-//     * @param gp the point with its geometry
-//     * @param ls light source
-//     * @param l  direction from light to the point
-//     * @param n normal vector to the surface of gp
-//     * @param nv dotproduct between n and ray direction
-//     * @return accumulated transparency attenuation factor
-//     */
-//
-//    private boolean unshaded(GeoPoint gp, LightSource ls, Vector l, Vector n, double nv) {
-//
-//        Vector lightDirection = l.scale(-1); // from point to light source
-//        double nl = n.dotProduct(lightDirection);
-//
-//        Vector delta = n.scale(nl > 0 ? EPS : -EPS);
-//        Point pointRay = gp.point.add(delta);
-//        Ray lightRay = new Ray(pointRay, lightDirection);
-//
-//        double maxDistance = ls.getDistance(gp.point);
-//        List<GeoPoint> intersections = scene.getGeometries().findGeoIntersections(lightRay, maxDistance);
-//
-//        if (intersections == null){
-//            return true;
-//        }
-//
-//        for (var item : intersections){
-//            if (item.geometry.getMaterial().getKt().lowerThan(MIN_CALC_COLOR_K)){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
-//    /**
-//     * The method checks whether there is any object shading the light source from a
-//     * point
-//     *
-//     * @param gp the point with its geometry
-//     * @param ls light source
-//     * @param l  direction from light to the point
-//     * @return accumulated transparency attenuation factor
-//     */
-//    private boolean unshaded(GeoPoint gp,LightSource ls, Vector l) {
-//        Vector n = gp.geometry.getNormal(gp.point);
-//
-//        Vector lightDirection = l.scale(-1); // from point to light source
-//        Ray lightRay = new Ray(gp.point, lightDirection, n);
-//
-//        double lightDistance = ls.getDistance(gp.point);
-//        var intersections = scene.getGeometries().findGeoIntersections(lightRay, lightDistance);
-//        if (intersections == null)
-//            return true;
-//
-//        Double3 tr = Double3.ONE;
-//        for (var geo : intersections) {
-//            tr = tr.product(geo.geometry.getMaterial().getKt());
-//            if (tr.lowerThan(MIN_CALC_COLOR_K))
-//                return false;
-//        }
-//
-//        return true;
-//    }
-
 }
