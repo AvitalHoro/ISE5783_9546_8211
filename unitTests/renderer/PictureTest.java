@@ -10,7 +10,7 @@ import scene.*;
 public class PictureTest {
     @Test
     public void PictureTest() {
-        Scene scene = new Scene.SceneBuilder("Targil 7.2").setBackground(new Color(255,255,255)).build();
+        Scene scene = new Scene.SceneBuilder("final picture").setBackground(new Color(255,255,255)).build();
         Camera camera = new Camera(new Point(0, -600, 10), new Vector(0, 1, 0), new Vector(0, 0, 1));
         camera.setVPSize(150, 150).setVPDistance(100);
 
@@ -85,7 +85,7 @@ public class PictureTest {
 
         scene.getGeometries().add(sqr1, sqrt2, sqrt3, sqrt4, sqrt5,pln, sphere ,sphere2, sphere3, sphere4);
 
-        camera.setImageWriter(new ImageWriter("Targil 7.2", 1000, 1000))
+        camera.setImageWriter(new ImageWriter("final picture", 1000, 1000))
                 .setRayTracer(new RayTracerBasic(scene))
                 .renderImage()
                 .writeToImage();
