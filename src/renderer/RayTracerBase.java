@@ -1,8 +1,11 @@
 package renderer;
 
 import primitives.*;
+import primitives.Color;
 import scene.*;
 
+
+import java.util.List;
 /**
  *  represents a ray tracer
  *  1) traces rays through a scene
