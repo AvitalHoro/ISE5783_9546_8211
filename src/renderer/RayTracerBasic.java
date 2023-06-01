@@ -117,42 +117,117 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * calculating a global effect color
-     *
-     * @param ray   the ray that intersects with the geometry.
-     * @param level the remaining number of times to do the recursion.
-     * @param k     the level of insignificance for the k.
-     * @param kx    the attenuation factor of reflection or transparency
-     * @return the calculated color.
+     * calculate the next level of the global effects if there are more intersections to check
+     * @param ray the is used to intersect the geometries
+     * @param level the current level
+     * @param kx a color factor to reduce the color (according to the current level of recursion)
+     * @param kkx the color factor for the next level of recursion
+     * @return the new calculated color
      */
-    private Color calcGlobalEffects(GeoPoint geoPoint, int level, Color color, Double3 kx, Double3 k, Ray ray) {
-        Double3 kkx = kx.product(k);
-        if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
-        GeoPoint reflectedPoint = findClosestIntersection(ray);
-        if (reflectedPoint != null) {
-            color = color.add(calcColor(reflectedPoint, ray, level - 1, kkx).scale(kx));
+    private Color calcGlobalEffects(Ray ray, int level, Double3 kx, Double3 kkx) {
+        GeoPoint gp = scene.getGeometries().findClosestIntersection(ray);
+        return (gp == null ? scene.getBackground() : calcColor(gp, ray, level - 1, kkx)).scale(kx);
+    }
+
+    /**
+     * calculate the color according to the k factor for the reflection and refraction effects
+     * @param gp calculate the color of this point
+     * @param ray the ray of intersection that 'hit' the point
+     * @param level of the recursion
+     * @param k the volume of the color
+     * @return the calculated color
+     */
+    private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
+        Color color = Color.BLACK;
+        Vector n = gp.geometry.getNormal(gp.point);
+        Material material = gp.geometry.getMaterial();
+
+        Double3 kkr = k.product(material.Kr);
+        if (!kkr.lowerThan(MIN_CALC_COLOR_K)) { // the color is effected by the reflection
+            Ray centerReflectedRay = constructReflectedRay(gp, n, ray.getDir());
+            double glossiness = material.glossiness;
+
+            if (material.isGlossy()){ // glossiness = glossy reflection
+                RayBeam rayBeam = new RayBeam(centerReflectedRay).setSize(glossiness);
+                List<Ray> rayList = rayBeam.constructRayBeam();
+                int beamSize = rayList.size();
+
+                for (Ray r : rayList) {
+                    double nr = n.dotProduct(r.getDir());
+                    double nc = n.dotProduct(centerReflectedRay.getDir());
+                    if(nr * nc > 0) // the ray has to be in the normal direction to be reflected correctly
+                        color = color.add(calcGlobalEffects(r, level, material.Kr, kkr));
+                    else
+                        beamSize--;
+                }
+                color = color.reduce(beamSize);
+            }
+            else
+                color = calcGlobalEffects(centerReflectedRay, level, material.Kr, kkr);
+        }
+
+        Double3 kkt = k.product(material.Kr);
+        if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {// the color is effected due to the transparency
+            Ray centerRefractedRay = constructRefractedRay(gp, n, ray.getDir());
+            double diffuseness = material.diffuseness;
+
+            if (material.isDiffusive()){ // diffuseness = diffusive refraction
+                RayBeam rayBeam = new RayBeam(centerRefractedRay).setSize(diffuseness);
+                List<Ray> rayList = rayBeam.constructRayBeam();
+                int beamSize = rayList.size();
+                for (Ray r : rayList) {
+                    double nr = n.dotProduct(r.getDir());
+                    double nc = n.dotProduct(centerRefractedRay.getDir());
+                    if(nr * nc > 0)// the ray has to be in the opposite direction of the normal refracted correctly
+                        color = color.add(calcGlobalEffects(r, level, material.Kr, kkt));
+                    else
+                        beamSize--;
+                }
+                color = color.reduce(beamSize); // average the color
+            }
+            else
+                color = color.add(calcGlobalEffects(centerRefractedRay, level, material.Kr, kkt));
         }
         return color;
     }
 
-    /**
-     * calculating the color in the global scene, tells what more points we need to
-     * check for the color calculations.
-     *
-     * @param gp    the point of the intersection.
-     * @param ray   the ray that intersects with the geometry.
-     * @param level the remaining number of times to do the recursion.
-     * @param k     the level of insignificance for the k.
-     * @return the calculated color.
-     */
-        private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
-        Color color = Color.BLACK;
-        Material material = gp.geometry.getMaterial();
-        Ray reflectedRay = constructReflectedRay(gp, gp.geometry.getNormal(gp.point), ray.getDir());
-        Ray refractedRay = constructRefractedRay(gp, gp.geometry.getNormal(gp.point), ray.getDir());
-        return calcGlobalEffects(gp, level, color, material.Kr, k, reflectedRay)
-                .add(calcGlobalEffects(gp, level, color, material.Kt, k, refractedRay));
-    }
+//    /**
+//     * calculating a global effect color
+//     *
+//     * @param ray   the ray that intersects with the geometry.
+//     * @param level the remaining number of times to do the recursion.
+//     * @param k     the level of insignificance for the k.
+//     * @param kx    the attenuation factor of reflection or transparency
+//     * @return the calculated color.
+//     */
+//    private Color calcGlobalEffects(GeoPoint geoPoint, int level, Color color, Double3 kx, Double3 k, Ray ray) {
+//        Double3 kkx = kx.product(k);
+//        if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
+//        GeoPoint reflectedPoint = findClosestIntersection(ray);
+//        if (reflectedPoint != null) {
+//            color = color.add(calcColor(reflectedPoint, ray, level - 1, kkx).scale(kx));
+//        }
+//        return color;
+//    }
+//
+//    /**
+//     * calculating the color in the global scene, tells what more points we need to
+//     * check for the color calculations.
+//     *
+//     * @param gp    the point of the intersection.
+//     * @param ray   the ray that intersects with the geometry.
+//     * @param level the remaining number of times to do the recursion.
+//     * @param k     the level of insignificance for the k.
+//     * @return the calculated color.
+//     */
+//        private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
+//        Color color = Color.BLACK;
+//        Material material = gp.geometry.getMaterial();
+//        Ray reflectedRay = constructReflectedRay(gp, gp.geometry.getNormal(gp.point), ray.getDir());
+//        Ray refractedRay = constructRefractedRay(gp, gp.geometry.getNormal(gp.point), ray.getDir());
+//        return calcGlobalEffects(gp, level, color, material.Kr, k, reflectedRay)
+//                .add(calcGlobalEffects(gp, level, color, material.Kt, k, refractedRay));
+//    }
 
         /**
      * function calculates specular color

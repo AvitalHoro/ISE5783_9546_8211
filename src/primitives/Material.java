@@ -1,5 +1,7 @@
 package primitives;
 
+import static primitives.Util.isZero;
+
 /**
  * this class represents the different materials of the surfaces
  * and the reflection of a light component on it,
@@ -35,6 +37,9 @@ public class Material {
      *  Shininess - how shiny the material is
      */
     public int nShininess = 0;
+
+    public double glossiness = 0;
+    public double diffuseness = 0;
 
 
     //*********Setters*********
@@ -129,6 +134,16 @@ public class Material {
         return this;
     }
 
+    public Material setGlossiness(double glossiness) {
+        this.glossiness = glossiness;
+        return this;
+    }
+
+    public Material setDiffuseness(double diffuseness) {
+        this.diffuseness = diffuseness;
+        return this;
+    }
+
     //*********Getters*********
 
     public Double3 getKs() {
@@ -151,6 +166,13 @@ public class Material {
         return Kr;
     }
 
+    public boolean isDiffusive() {
+        return !isZero(diffuseness);
+    }
+
+    public boolean isGlossy() {
+        return !isZero(glossiness);
+    }
 
 }
 

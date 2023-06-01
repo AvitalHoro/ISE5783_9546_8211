@@ -42,5 +42,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="gson-2.8.8" level="project" />
+    <orderEntry type="library" name="ejml-simple-0.41.1" level="project" />
+    <orderEntry type="library" name="ejml-simple-0.43" level="project" />
   </component>
 </module>

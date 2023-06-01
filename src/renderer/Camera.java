@@ -19,6 +19,8 @@ public class Camera {
     private double distance;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+    private int multiThreading = 1;
+
 
     //region getters
     public Point getP0() {
@@ -104,6 +106,16 @@ public class Camera {
         imageWriter.writePixel(jrow, icol, pixelColor);
     }
 
+    /**
+     * if multithreading is needed then it is possible to change the amount of threads rendering the image
+     * @param multiThreading the amount of threads
+     * @return this - builder pattern
+     */
+    public Camera setMultiThreading(int multiThreading) {
+        this.multiThreading = multiThreading;
+        return this;
+    }
+
     //region constructRay
 
     /**
@@ -131,58 +143,155 @@ public class Camera {
     }
     //endregion
 
-    //region renderImage
-
     /**
-     * render the image and fill the pixels with the desired colors
-     * using the ray tracer to find the colors
-     * and the image writer to color the pixels
-     *
-     * @throws MissingResourceException if one of the fields are uninitialized
+     * render the image and fill the pixels with the desired color.
+     * using the ray tracer to find the colors.
+     * and the image writer to color the pixels.
+     * @throws MissingResourceException if one of the following fields are uninitialized (unable to render the image):<ul>
+     *     <li> imageWriter </li>
+     *     <li> reyTracer </li>
+     *     <li> width </li>
+     *     <li> height </li>
+     *     <li> distance </li>
+     * </ul>
+     * optional - use threading
      */
-
-    public Camera renderImage() {
-        try {
-            if (imageWriter == null) {
-                throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
-            }
-            if (rayTracer == null) {
-                throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
-            }
-            int nX = imageWriter.getNx();
-            int nY = imageWriter.getNy();
-            //rendering the image
-            for (int i = 0; i < nY; i++) {
-                for (int j = 0; j < nX; j++) {
-                    castRay(nX, nY, i, j);
-                }
-            }
-//            }
-        } catch (MissingResourceException e) {
-            throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
+    public Camera renderImage() throws MissingResourceException{
+        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
+            throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
         }
+
+        int nY = imageWriter.getNy();
+        int nX = imageWriter.getNx();
+
+        int threadsCount = this.multiThreading;
+        Pixel.initialize(nY, nX, 1);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {          // start the treads
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    imageWriter.writePixel(pixel.col, pixel.row,
+                            rayTracer.traceRay(
+                                    constructRay(nX, nY, pixel.col, pixel.row)));
+            }).start();
+        }
+        Pixel.waitToFinish();
         return this;
     }
 
+    /**
+     * render the image and fill the pixels with the desired color.
+     * using the ray tracer to find the colors.
+     * and the image writer to color the pixels.
+     * @throws MissingResourceException if one of the following fields are uninitialized (unable to render the image):<ul>
+     *     <li> imageWriter </li>
+     *     <li> reyTracer </li>
+     *     <li> width </li>
+     *     <li> height </li>
+     *     <li> distance </li>
+     * </ul>
+     * @param rayNum the size of the ray beam
+     * optional - use threading
+     */
+    public Camera renderImage(int rayNum) {
+        if (imageWriter == null || rayTracer == null || width == 0 || height == 0 || distance == 0) {
+            throw new MissingResourceException("Camera is missing some fields", "Camera", "field");
+        }
+        int nY = imageWriter.getNy();
+        int nX = imageWriter.getNx();
+
+        int threadsCount = this.multiThreading;
+        Pixel.initialize(nY, nX, 1);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {                  // start the threads
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
+                    Color color = Color.BLACK;
+
+                    RayBeam rayBeam = new RayBeam(constructRay(nX, nY, pixel.col, pixel.row),
+                            this.vUp, this.vRight)
+                            .setSize(this.width / nY, this.height / nX)
+                            .setAmount(rayNum);
+
+                    for (Ray r : rayBeam.constructRayBeam()) {
+                        color = color.add(rayTracer.traceRay(r));
+                    }
+                    color = color.reduce(rayNum);   // average the color
+                    imageWriter.writePixel(pixel.col, pixel.row, color);
+                }
+            }).start();
+        }
+        Pixel.waitToFinish();
+        return this;
+    }
+//    /**
+//     * render the image and fill the pixels with the desired colors
+//     * using the ray tracer to find the colors
+//     * and the image writer to color the pixels
+//     *
+//     * @throws MissingResourceException if one of the fields are uninitialized
+//     */
+//
+//    public Camera renderImage() {
+//        try {
+//            if (imageWriter == null) {
+//                throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+//            }
+//            if (rayTracer == null) {
+//                throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
+//            }
+//            int nX = imageWriter.getNx();
+//            int nY = imageWriter.getNy();
+//            //rendering the image
+//            for (int i = 0; i < nY; i++) {
+//                for (int j = 0; j < nX; j++) {
+//                    castRay(nX, nY, i, j);
+//                }
+//            }
+////            }
+//        } catch (MissingResourceException e) {
+//            throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
+//        }
+//        return this;
+//    }
+
     //endregion
 
-    //region printGrid
-
     /**
-     * print a grid on the image without running over the original image
-     *
+     *  print a grid on the image without running over the original image
      * @param interval the size of the grid squares
-     * @param color    the color of the grid
-     * @throws MissingResourceException
+     * @param color the color of the grid
+     * @throws MissingResourceException if the imageWriter is uninitialized - unable to print a grid
      */
-    public void printGrid(int interval, Color color) throws MissingResourceException {
-        if (this.imageWriter == null) // the image writer is uninitialized
+    public void printGrid(int interval, Color color) throws MissingResourceException{
+        if (this.imageWriter == null)
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
-        for (int i = 0; i < imageWriter.getNy(); i++)
-            for (int j = 0; j < imageWriter.getNx(); j++)
-                if (i % interval == 0 || j % interval == 0)  // color the grid
-                    imageWriter.writePixel(j, i, color);
+
+        // loop over j
+        for (int i = 0;  i< imageWriter.getNy(); i++)
+            for (int j = 0;j< imageWriter.getNx() ; j += interval)
+                imageWriter.writePixel(j,i,color);  // color the grid
+
+        // loop for j
+        for (int i = 0;  i< imageWriter.getNy(); i+= interval)
+            for (int j = 0;j< imageWriter.getNx() ; j++)
+                imageWriter.writePixel(j,i,color);  // color the grid
     }
+    //region printGrid
+//
+//    /**
+//     * print a grid on the image without running over the original image
+//     *
+//     * @param interval the size of the grid squares
+//     * @param color    the color of the grid
+//     * @throws MissingResourceException
+//     */
+//    public void printGrid(int interval, Color color) throws MissingResourceException {
+//        if (this.imageWriter == null) // the image writer is uninitialized
+//            throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
+//        for (int i = 0; i < imageWriter.getNy(); i++)
+//            for (int j = 0; j < imageWriter.getNx(); j++)
+//                if (i % interval == 0 || j % interval == 0)  // color the grid
+//                    imageWriter.writePixel(j, i, color);
+//    }
     //endregion
 
     //region writeToImage
@@ -194,6 +303,69 @@ public class Camera {
         if (this.imageWriter == null) // the image writer is uninitialized
             throw new MissingResourceException("Camera is missing some fields", "Camera", "imageWriter");
         imageWriter.writeToImage();
+    }
+
+    //region rotate around vTo
+    /**
+     * rotate the camera around the vTo vector -
+     * <ul>
+     *     <li>positive angle: spin the camera on the reverse of the clockwise direction = spin the scene to clockwise</li>
+     *     <li>negative angle: spin the camera clockwise = spin the scene on the reverse of the clockwise direction</li>
+     * </ul>
+     * @param angle the angle of the rotation
+     * @return the camera itself. builder pattern
+     */
+    public Camera rotateAroundVTo(double angle){
+        vRight = vRight.moveClockwiseAround(vTo, angle);
+        vUp = vRight.crossProduct(vTo).normalize();
+        return this;
+    }
+    //endregion
+
+    //region rotate around vUp
+    /**
+     * rotate the camera around the vUp vector -
+     * <ul>
+     *     <li>positive angle: rotate the camera to the left = move the scene to the right</li>
+     *     <li>negative angle: rotate the camera to the right = move the scene to the left</li>
+     * </ul>
+     * @param angle the angle of the rotation
+     * @return the camera itself. builder pattern
+     */
+    public Camera rotateAroundVUp(double angle){
+        vTo = vTo.moveClockwiseAround(vUp, angle);
+        vRight = vTo.crossProduct(vUp).normalize();
+        return this;
+    }
+    //endregion
+
+    /**
+     * rotate the camera around the vRight vector -
+     * <ul>
+     *     <li>positive angle: rotate the camera upward = move the scene downward</li>
+     *     <li>negative angle: rotate the camera downward = move the scene upward</li>
+     * </ul>
+     * @param angle the angle of the rotation
+     * @return the camera itself. builder pattern
+     */
+    public Camera rotateAroundVRight(double angle){
+        vUp = vUp.moveClockwiseAround(vRight, angle);
+        vTo = vUp.crossProduct(vRight).normalize();
+        return this;
+    }
+
+    /**
+     * move the reference point of the camera using the amount of units to move in the direction of each reference vector
+     * @param moveVUp on the direction of vUp
+     * @param moveVTo on the direction of vTo
+     * @param moveVRight on the direction of vRight
+     * @return the camera itself. builder pattern
+     */
+    public Camera moveReferencePoint(double moveVUp, double moveVTo,double moveVRight){
+        if(!isZero(moveVUp))     this.p0 = this.p0.add(vUp.scale(moveVUp));
+        if(!isZero(moveVRight))  this.p0 = this.p0.add(vRight.scale(moveVRight));
+        if(!isZero(moveVTo))     this.p0 = this.p0.add(vTo.scale(moveVTo));
+        return this;
     }
     //endregion
 

@@ -76,6 +76,7 @@ public class Ray {
         return p0.add(dir.scale(t));
     }
 
+
     /** Try to think of a better solution
      *  find the point that is the closet one to the head of the ray
      *
@@ -87,27 +88,48 @@ public class Ray {
                 : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
     //endregion
-
-
     /**
-     * Try to think of a better solution
-     *  find the point that is the closet one to the head of the ray
-     * @param intersections
-     * @return the closest geo-point to the head of the ray
+     * find the closest GeoPoint to the head of the ray
+     * @param points a list of GeoPoints
+     * @return the closest GeoPoint
      */
-    public GeoPoint findClosestGeoPoint(List<GeoPoint> intersections) {
-        GeoPoint closestpoint = null;
-        double minDistance = Double.MAX_VALUE;
-        double ptDistance;
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> points) {
+        if (points == null)
+            return null;
 
-        for (GeoPoint geoPoint : intersections) {
-            ptDistance = geoPoint.point.distanceSquared(p0);
-            if (ptDistance < minDistance) {
-                minDistance = ptDistance;
-                closestpoint = geoPoint;
+        GeoPoint closestPoint = points.get(0);
+        double distance = closestPoint.point.distanceSquared(this.p0);
+
+        for (GeoPoint geoPoint : points) {
+            double d = geoPoint.point.distanceSquared(this.p0);
+            if(distance > d)    // if there is a closer point then 'point', replace the values
+            {
+                closestPoint = geoPoint;
+                distance = d;
             }
         }
-        return closestpoint;
+        return closestPoint;
     }
+
+//    /**
+//     * Try to think of a better solution
+//     *  find the point that is the closet one to the head of the ray
+//     * @param intersections
+//     * @return the closest geo-point to the head of the ray
+//     */
+//    public GeoPoint findClosestGeoPoint(List<GeoPoint> intersections) {
+//        GeoPoint closestpoint = null;
+//        double minDistance = Double.MAX_VALUE;
+//        double ptDistance;
+//
+//        for (GeoPoint geoPoint : intersections) {
+//            ptDistance = geoPoint.point.distanceSquared(p0);
+//            if (ptDistance < minDistance) {
+//                minDistance = ptDistance;
+//                closestpoint = geoPoint;
+//            }
+//        }
+//        return closestpoint;
+//    }
 
 }
