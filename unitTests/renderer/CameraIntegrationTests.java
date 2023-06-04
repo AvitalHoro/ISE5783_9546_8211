@@ -1,13 +1,16 @@
 
 package renderer;
 
-import java.util.List;
-
+import geometries.Geometry;
+import geometries.Plane;
+import geometries.Sphere;
+import geometries.Triangle;
 import org.junit.jupiter.api.Test;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
-import geometries.*;
-import primitives.*;
-import renderer.Camera;
+import java.util.List;
 
 /**
  * camera integration tests with a sphere, plane, and triangle.
@@ -23,7 +26,7 @@ public class CameraIntegrationTests {
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
                 intersectionPoints = geo.findIntersections(
-                        camera.constructRay(3, 3, j, i));
+                        (Ray) camera.constructRays(3, 3, j, i, 32));
                 if (intersectionPoints != null)
                     intersections += intersectionPoints.size();
             }
@@ -33,7 +36,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a sphere
-     * {@link renderer.Camera#constructRay(int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int)}.
      */
     @Test
     public void SphereIntegration() {
@@ -65,7 +68,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a plane
-     * {@link renderer.Camera#constructRay(int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int)}.
      */
     @Test
     public void PlaneIntegration() {
@@ -84,7 +87,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a triangle
-     * {@link renderer.Camera#constructRay(int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int)}.
      */
     @Test
     public void TriangleIntegration() {

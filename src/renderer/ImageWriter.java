@@ -1,14 +1,14 @@
 
 package renderer;
 
-        import primitives.Color;
-        import java.awt.image.BufferedImage;
-        import java.io.File;
-        import java.io.IOException;
-        import java.util.logging.Level;
-        import java.util.logging.Logger;
+import primitives.Color;
 
-        import javax.imageio.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Image writer class combines accumulation of pixel color matrix and finally
@@ -91,4 +91,27 @@ public class ImageWriter {
         image.setRGB(xIndex, yIndex, color.getColor().getRGB());
     }
 
+    /**
+     *Grid printing
+     * @param interval The space between pixels
+     * @param color color of grid
+     */
+    public void printGrid(int interval, Color color) {
+        for (int i = 0; i < nX; i+= interval) {
+            for (int j = 0; j < nY; j++) {
+                // _width/interval // _height/interval
+                writePixel(i, j, color);
+
+            }
+        }
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j+= interval) {
+                // _width/interval // _height/interval
+                writePixel(i, j, color);
+
+            }
+        }
+    }
 }
+
+

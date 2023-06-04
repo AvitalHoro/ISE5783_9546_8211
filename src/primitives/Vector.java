@@ -1,8 +1,4 @@
 package primitives;
-import org.ejml.data.SimpleMatrix;
-
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
 
 public class Vector extends Point {
     /**
@@ -86,17 +82,6 @@ public class Vector extends Point {
                 (xyz.d1 * other.xyz.d2) - (xyz.d2 * other.xyz.d1));
     }
 
-    /** calculate ant return orthogonal vector
-     * @return result of vector multiplication
-     */    public Vector getOrthogonal(){
-        Vector orthogonal;
-        if(!isZero(this.getX()) || !isZero(this.getY()))
-            orthogonal = new Vector(this.getY(),-this.getX(), 0);
-        else
-            orthogonal = new Vector(0,-this.getZ(), this.getY());
-        return orthogonal;
-    }
-
     /** calculates the length squared of vector
      * @return length squared of vector
      */
@@ -122,68 +107,52 @@ public class Vector extends Point {
     }
 
     /**
-     * rotating a vector around a requested vector, in an angle requested
-     * using the rotation matrix method
-     * the calling vector is the vector that will be moved due to the rotation
-     * @param rotationVector the vector the space will rotate around, orthogonal to the calling vector
-     * @param angle the size of the rotation - angle in degrees
-     * @return vectorToMove normalized and rotated to the left with the requested angle
+     * Rotates the vector around the x-axis
+     *
+     * @param alpha the amount to rotate in degrees
+     * @return the current vector
      */
-    public Vector moveClockwiseAround(Vector rotationVector, double angle) {
-        if (!isZero(this.dotProduct(rotationVector)))
-            throw new IllegalArgumentException("the vectors are not orthogonal");
+    public Vector rotateX(double alpha) {
+        double radianAlpha = alpha * Math.PI / 180;
 
-        // convert the angle to radians
-        angle = Math.toRadians(angle);
-        // the third vector to span the space to rotate
-        Vector orthogonalVector = this.crossProduct(rotationVector);
+        double x = getX();
+        double y = getY() * Math.cos(radianAlpha) - getZ() * Math.sin(radianAlpha);
+        double z = getY() * Math.sin(radianAlpha) + getZ() * Math.cos(radianAlpha);
 
-        SimpleMatrix matrixP = new SimpleMatrix(3,3);
-        // fill the P matrix -
-        // the conversion matrix between the standard base (E) to our base (F)
-        matrixP.set(0,0, rotationVector.getX());
-        matrixP.set(1,0, rotationVector.getY());
-        matrixP.set(2,0, rotationVector.getZ());
-        matrixP.set(0,1, this.getX());
-        matrixP.set(1,1, this.getY());
-        matrixP.set(2,1, this.getZ());
-        matrixP.set(0,2, orthogonalVector.getX());
-        matrixP.set(1,2, orthogonalVector.getY());
-        matrixP.set(2,2, orthogonalVector.getZ());
+        return new Vector(x, y, z);
+    }
 
-        SimpleMatrix matrixA = new SimpleMatrix(3,3);
-        // fill the A matrix -
-        // the copy matrix in our base (F)
-        matrixA.set(0,0, 1);
-        matrixA.set(1,0, 0);
-        matrixA.set(2,0, 0);
-        matrixA.set(0,1, 0);
-        matrixA.set(1,1, alignZero(Math.cos(angle)));
-        matrixA.set(2,1, alignZero(Math.sin(angle)));
-        matrixA.set(0,2, 0);
-        matrixA.set(1,2, -alignZero(Math.sin(angle)));
-        matrixA.set(2,2, alignZero(Math.cos(angle)));
 
-        // the invertible matrix -
-        // the conversion matrix on the opposite way from matrixP,
-        // from our base (F) to the standard base (E)
-        SimpleMatrix matrixInvertP = matrixP.invert();
+    /**
+     * Rotates the vector around the y axis
+     *
+     * @param alpha the amount to rotate in degrees
+     * @return the current vector
+     */
+    public Vector rotateY(double alpha) {
+        double radianAlpha = alpha * Math.PI / 180;
 
-        // the full copy matrix from the standard base (E) to the standard base (E)
-        SimpleMatrix copyMatrix = matrixP.mult(matrixA).mult(matrixInvertP);
+        double x = getX() * Math.cos(radianAlpha) + getZ() * Math.sin(radianAlpha);
+        double y = getY();
+        double z = -getX() * Math.sin(radianAlpha) + getZ() * Math.cos(radianAlpha);
 
-        // convert the vector that is going to be copied from a vector to a matrix ot execute the matrix multiplication
-        SimpleMatrix matrixVectorToMove = new SimpleMatrix(3,1);
-        matrixVectorToMove.set(0,0,this.getX());
-        matrixVectorToMove.set(1,0,this.getY());
-        matrixVectorToMove.set(2,0,this.getZ());
+        return new Vector(x, y, z);
+    }
 
-        // the converted vector in a form of a matrix
-        matrixVectorToMove = copyMatrix.mult(matrixVectorToMove);
 
-        // convert the matrix to a vector
-        return new Vector(matrixVectorToMove.get(0,0),
-                matrixVectorToMove.get(1,0),
-                matrixVectorToMove.get(2,0)).normalize();
+    /**
+     * Rotates the vector around the z axis
+     *
+     * @param alpha the amount to rotate in degrees
+     * @return the current vector
+     */
+    public Vector rotateZ(double alpha) {
+        double radianAlpha = alpha * Math.PI / 180;
+
+        double x = getX() * Math.cos(radianAlpha) - getY() * Math.sin(radianAlpha);
+        double y = getX() * Math.sin(radianAlpha) + getY() * Math.cos(radianAlpha);
+        double z = getZ();
+
+        return new Vector(x, y, z);
     }
 }

@@ -21,12 +21,22 @@ public class Plane extends Geometry {
 
     Vector normal;
 
-    //point and vector constructor
+    /**
+     * point and vector constructor
+     * @param q0
+     * @param normal
+     */
     public Plane(Point q0, Vector normal) {
         this.q0 = q0;
         this.normal = normal.normalize();
     }
-    //points constructor
+
+    /**
+     * points constructor
+     * @param p1
+     * @param p2
+     * @param p3
+     */
     public Plane(Point p1, Point p2, Point p3) {
         q0 = p1;
 

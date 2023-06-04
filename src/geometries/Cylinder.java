@@ -4,11 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import static primitives.Util.alignZero;
 
 public class Cylinder extends Tube {
     /**cylinder class represents height in double
@@ -90,6 +87,11 @@ public class Cylinder extends Tube {
         return result.size() == 0 ? null : result;
     }
 
+    /**
+     *
+     * @param point
+     * @return
+     */
     @Override
     public Vector getNormal(Point point) {
 
