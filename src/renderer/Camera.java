@@ -351,44 +351,6 @@ public class Camera {
         return rays;
     }
 
-
-//    /**
-//     * Creates a beam of rays into a square grid
-//     * @param nX Pixel length
-//     * @param nY Pixel width
-//     * @param j Position the pixel on the y-axis inside the grid
-//     * @param i Position the pixel on the x-axis inside the grid
-//     * @param numOfRays The root of the number of beams sent per pixel
-//     * @return List of beams of rays
-//     */
-//    public List<Ray> constructRays(int nX, int nY, int j, int i, int numOfRays) {
-//        if (numOfRays== 0) {
-//            throw new IllegalArgumentException("num Of Rays can not be 0");
-//        }
-//        if (numOfRays == 1) {
-//            return List.of(constructRayThroughPixel(nX, nY, j, i));
-//        }
-//        else {
-//            List<Ray> rays = new LinkedList<>();
-//            Point pIJ = getCenterOfPixel(nX, nY, j, i);
-//
-//            double rY = alignZero(height / nY);
-//            // the ratio Rx = w/Nx, the width of the pixel
-//            double rX = alignZero(width / nX);
-//
-//            double pY = alignZero(rY / numOfRays);
-//            double pX = alignZero(rX / numOfRays);
-//            Point PijTemP = pIJ;
-//            for (int p = 1; p < numOfRays; p++) {
-//                for (int m = 1; m < numOfRays; m++) {
-//                    PijTemP = pIJ.add(vRight.scale(pX * m)).add(vUp.scale(pY * p));
-//                    rays.add(new Ray(p0, PijTemP.subtract(p0).normalize()));
-//                }
-//            }
-//            return rays;
-//        }
-//    }
-
     /**
      * Invites the coloring function
      */
