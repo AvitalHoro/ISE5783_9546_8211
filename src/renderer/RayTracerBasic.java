@@ -260,7 +260,6 @@ public class RayTracerBasic extends RayTracerBase {
         return ktr;
     }
 
-
     /**
      * Building a beam of rays for transparency and reflection
      * @param ray The beam coming out of the camera

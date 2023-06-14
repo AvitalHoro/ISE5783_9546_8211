@@ -26,7 +26,7 @@ public class Camera {
     private Point centerPoint;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    private int antiAliasing=1;
+    private int antiAliasing= 1;
     private boolean adaptive = false;
     private int threadsCount = 1;
 
@@ -52,7 +52,6 @@ public class Camera {
     //region Getters/Setters
     /**
      * get of p0
-     *
      * @return point
      */
     public Point getP0() {
@@ -61,7 +60,6 @@ public class Camera {
 
     /**
      * get of vRight
-     *
      * @return vector
      */
     public Vector getvRight() {
@@ -70,7 +68,6 @@ public class Camera {
 
     /**
      * get of vUp
-     *
      * @return vector
      */
     public Vector getvUp() {
@@ -79,7 +76,6 @@ public class Camera {
 
     /**
      * get of vTo
-     *
      * @return vector
      */
     public Vector getvTo() {
@@ -88,7 +84,6 @@ public class Camera {
 
     /**
      * get of distance
-     *
      * @return double
      */
     public double getDistance() {
@@ -97,7 +92,6 @@ public class Camera {
 
     /**
      * get of width
-     *
      * @return double
      */
     public double getWidth() {
@@ -106,7 +100,6 @@ public class Camera {
 
     /**
      * get of height
-     *
      * @return double
      */
     public double getHeight() {
@@ -115,7 +108,6 @@ public class Camera {
 
     /**
      * get of centerPoint
-     *
      * @return point
      */
     public Point get_centerVPPoint() {
@@ -124,7 +116,6 @@ public class Camera {
 
     /**
      * set the view plane size
-     *
      * @param width  the width of the view plane
      * @param height the height of the view plane
      * @return this camera (like builder pattern)
@@ -142,7 +133,6 @@ public class Camera {
 
     /**
      * set the distance from the camera to the view plane
-     *
      * @param distance the distance
      * @return this camera (like builder pattern)
      * @throws IllegalArgumentException if distance = 0
@@ -160,7 +150,6 @@ public class Camera {
     }
     /**
      * set the rayTracer ray from the camera to the view plane
-     *
      * @param rayTracer the rayTracer
      * @return this camera (like builder pattern)
      */
@@ -170,8 +159,7 @@ public class Camera {
     }
 
     /**
-     * set the imageWriter  for the Camera
-     *
+     * set the imageWriter for the Camera
      * @return the Camera object
      */
     public Camera setImageWriter(ImageWriter imageWriter) {
@@ -180,7 +168,6 @@ public class Camera {
     }
     /**
      * set the anti Aliasing
-     *
      * @return the Camera object
      */
     public Camera setantiAliasing(int antiAliasing) {
@@ -189,7 +176,6 @@ public class Camera {
     }
     /**
      * set the adaptive
-     *
      * @return the Camera object
      */
     public Camera setadaptive(boolean adaptive) {
@@ -198,7 +184,6 @@ public class Camera {
     }
     /**
      * set the threadsCount
-     *
      * @return the Camera object
      */
     public Camera setthreadsCount(int threadsCount) {
@@ -207,16 +192,16 @@ public class Camera {
     }
     /**
      * set senter the camera
-     *
      */
     public void setP0(double x,double y, double z) {
         this.p0=new Point(x,y,z);
     }
 //endregion
 
-    //    /**
-//     * Checks that all fields are full and creates an image
-//     */
+    /**
+     * Checks that all fields are full and creates an image
+     * @return the Camera object
+     */
     public Camera renderImage() {
         if (p0 == null || vRight == null
                 || vUp == null || vTo == null || distance == 0
@@ -231,7 +216,8 @@ public class Camera {
             while (threadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                        imageWriter.writePixel(pixel.col, pixel.row, rayTracer.TraceRays(constructRays(imageWriter.getNx(), imageWriter.getNy(), pixel.col, pixel.row, antiAliasing)));
+                        imageWriter.writePixel(pixel.col, pixel.row, rayTracer.TraceRays(constructRays(imageWriter.getNx(),
+                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing)));
                 }).start();
             }
             Pixel.waitToFinish();
@@ -239,7 +225,8 @@ public class Camera {
             while (threadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                        imageWriter.writePixel(pixel.col, pixel.row, AdaptiveSuperSampling(imageWriter.getNx(), imageWriter.getNy(), pixel.col, pixel.row, antiAliasing));
+                        imageWriter.writePixel(pixel.col, pixel.row, AdaptiveSuperSampling(imageWriter.getNx(),
+                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing));
                 }).start();
             }
             Pixel.waitToFinish();
@@ -290,7 +277,6 @@ public class Camera {
     /**
      * construct ray through a pixel in the view plane
      * nX and nY create the resolution
-     *
      * @param nX number of pixels in the width of the view plane
      * @param nY number of pixels in the height of the view plane
      * @param j  index row in the view plane
@@ -307,7 +293,6 @@ public class Camera {
 
     /**
      * get the center point of the pixel in the view plane
-     *
      * @param nX number of pixels in the width of the view plane
      * @param nY number of pixels in the height of the view plane
      * @param j  index row in the view plane
@@ -338,41 +323,71 @@ public class Camera {
     }
 
     /**
-     * Creates a beam of rays into a square grid
-     * @param nX Pixel length
-     * @param nY Pixel width
-     * @param j Position the pixel on the y-axis inside the grid
-     * @param i Position the pixel on the x-axis inside the grid
-     * @param numOfRays The root of the number of beams sent per pixel
-     * @return List of beams of rays
+     * function that returns the rays from the camera to the point
+     *
+     * @param nX the x resolution
+     * @param nY the y resolution
+     * @param i  the x coordinate
+     * @param j  the y coordinate
+     * @return the ray
      */
     public List<Ray> constructRays(int nX, int nY, int j, int i, int numOfRays) {
-        if (numOfRays== 0) {
-            throw new IllegalArgumentException("num Of Rays can not be 0");
-        }
-        if (numOfRays == 1) {
-            return List.of(constructRayThroughPixel(nX, nY, j, i));
-        }
-        else {
-            List<Ray> rays = new LinkedList<>();
-            Point pIJ = getCenterOfPixel(nX, nY, j, i);
+        List<Ray> rays = new LinkedList<>();
+        Point centralPixel = getCenterOfPixel(nX, nY, j, i);
+        double rY = height / nY / antiAliasing;
+        double rX = width / nX / antiAliasing;
+        double x, y;
 
-            double rY = alignZero(height / nY);
-            // the ratio Rx = w/Nx, the width of the pixel
-            double rX = alignZero(width / nX);
-
-            double pY = alignZero(rY / numOfRays);
-            double pX = alignZero(rX / numOfRays);
-            Point PijTemP = pIJ;
-            for (int p = 1; p < numOfRays; p++) {
-                for (int m = 1; m < numOfRays; m++) {
-                    PijTemP = pIJ.add(vRight.scale(pX * m)).add(vUp.scale(pY * p));
-                    rays.add(new Ray(p0, PijTemP.subtract(p0).normalize()));
-                }
+        for (int rowNumber = 0; rowNumber < antiAliasing; rowNumber++) {
+            for (int colNumber = 0; colNumber < antiAliasing; colNumber++) {
+                y = -(rowNumber - (antiAliasing - 1d) / 2) * rY;
+                x = (colNumber - (antiAliasing - 1d) / 2) * rX;
+                Point pIJ = centralPixel;
+                if (y != 0) pIJ = pIJ.add(vUp.scale(y));
+                if (x != 0) pIJ = pIJ.add(vRight.scale(x));
+                rays.add(new Ray(p0, pIJ.subtract(p0)));
             }
-            return rays;
         }
+        return rays;
     }
+
+
+//    /**
+//     * Creates a beam of rays into a square grid
+//     * @param nX Pixel length
+//     * @param nY Pixel width
+//     * @param j Position the pixel on the y-axis inside the grid
+//     * @param i Position the pixel on the x-axis inside the grid
+//     * @param numOfRays The root of the number of beams sent per pixel
+//     * @return List of beams of rays
+//     */
+//    public List<Ray> constructRays(int nX, int nY, int j, int i, int numOfRays) {
+//        if (numOfRays== 0) {
+//            throw new IllegalArgumentException("num Of Rays can not be 0");
+//        }
+//        if (numOfRays == 1) {
+//            return List.of(constructRayThroughPixel(nX, nY, j, i));
+//        }
+//        else {
+//            List<Ray> rays = new LinkedList<>();
+//            Point pIJ = getCenterOfPixel(nX, nY, j, i);
+//
+//            double rY = alignZero(height / nY);
+//            // the ratio Rx = w/Nx, the width of the pixel
+//            double rX = alignZero(width / nX);
+//
+//            double pY = alignZero(rY / numOfRays);
+//            double pX = alignZero(rX / numOfRays);
+//            Point PijTemP = pIJ;
+//            for (int p = 1; p < numOfRays; p++) {
+//                for (int m = 1; m < numOfRays; m++) {
+//                    PijTemP = pIJ.add(vRight.scale(pX * m)).add(vUp.scale(pY * p));
+//                    rays.add(new Ray(p0, PijTemP.subtract(p0).normalize()));
+//                }
+//            }
+//            return rays;
+//        }
+//    }
 
     /**
      * Invites the coloring function

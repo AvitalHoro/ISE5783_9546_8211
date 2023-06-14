@@ -36,7 +36,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a sphere
-     * {@link renderer.Camera#constructRays(int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int, int)}.
      */
     @Test
     public void SphereIntegration() {
@@ -68,7 +68,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a plane
-     * {@link renderer.Camera#constructRays(int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int, int)}.
      */
     @Test
     public void PlaneIntegration() {
@@ -87,7 +87,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a triangle
-     * {@link renderer.Camera#constructRays(int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int, int)}.
      */
     @Test
     public void TriangleIntegration() {

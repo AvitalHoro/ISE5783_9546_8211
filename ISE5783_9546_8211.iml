@@ -42,6 +42,5 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="gson-2.8.8" level="project" />
-    <orderEntry type="library" name="ejml-cdense-0.42-sources" level="project" />
   </component>
 </module>

@@ -27,6 +27,23 @@ public class PointLight extends Light implements LightSource{
     }
     //endregion
 
+//    /**
+//     * get the intensity of the light in relation to the distance from the point
+//     * @param p The point where the light strikes
+//     * @return the color of the point
+//     */
+//    @Override
+//    public Color getIntensity(Point p) {
+//        double dist = p.distance(position);
+//
+//        if(dist <= 0){
+//            return getIntensity();
+//        }
+//        Double3 factor = (kC.add(kL.scale(dist))).add(kQ.scale(dist * dist));
+//
+//        return getIntensity().reduce(factor);
+//    }
+
     //region getIntensity
     @Override
     public Color getIntensity(Point point) {

@@ -50,15 +50,6 @@ public abstract class Intersectable {
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
     /**
-     * intersects the ray with the scene and finds the closest point the ray intersects
-     * @param ray to intersect the scene with
-     * @return the closest point
-     */
-    public GeoPoint findClosestIntersection(Ray ray) {
-        List<GeoPoint> intersectionPoints = findGeoIntersections(ray);
-        return ray.findClosestGeoPoint(intersectionPoints);
-    }
-    /**
      * pds class
      */
     public static class GeoPoint {
