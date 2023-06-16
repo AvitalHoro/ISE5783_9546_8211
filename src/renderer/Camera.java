@@ -221,7 +221,8 @@ public class Camera {
                 }).start();
             }
             Pixel.waitToFinish();
-        } else {
+        }
+        else {
             while (threadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
