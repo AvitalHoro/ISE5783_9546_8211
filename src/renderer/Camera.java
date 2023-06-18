@@ -30,6 +30,7 @@ public class Camera {
     private boolean adaptive = false;
     private int threadsCount = 1;
 
+
     /**
      * constructor for camera
      *
@@ -186,9 +187,10 @@ public class Camera {
      * set the threadsCount
      * @return the Camera object
      */
-    public Camera setthreadsCount(int threadsCount) {
+    public Camera setMultiThreading(int threadsCount) {
         this.threadsCount = threadsCount;
         return this;
+
     }
     /**
      * set senter the camera
@@ -226,8 +228,8 @@ public class Camera {
             while (threadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                        imageWriter.writePixel(pixel.col, pixel.row, AdaptiveSuperSampling(imageWriter.getNx(),
-                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing));
+                        imageWriter.writePixel(pixel.col, pixel.row, SuperSampling(imageWriter.getNx(),
+                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing, false));
                 }).start();
             }
             Pixel.waitToFinish();
@@ -238,14 +240,14 @@ public class Camera {
     /**
      * Checks the color of the pixel with the help of individual rays and averages between them and only
      * if necessary continues to send beams of rays in recursion
-     * @param nX Pixel length
-     * @param nY Pixel width
+     * @param nX amount of pixels by length
+     * @param nY amount of pixels by width
      * @param j The position of the pixel relative to the y-axis
      * @param i The position of the pixel relative to the x-axis
      * @param numOfRays The amount of rays sent
      * @return Pixel color
      */
-    private Color AdaptiveSuperSampling(int nX, int nY, int j, int i,  int numOfRays)  {
+    private Color SuperSampling(int nX, int nY, int j, int i,  int numOfRays, boolean adaptiveAlising)  {
         Vector Vright = vRight;
         Vector Vup = vUp;
         Point cameraLoc = this.getP0();
@@ -261,7 +263,10 @@ public class Camera {
 
         double PRy = rY/numOfRaysInRowCol;
         double PRx = rX/numOfRaysInRowCol;
-        return rayTracer.AdaptiveSuperSamplingRec(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
+        if (adaptiveAlising)
+            return rayTracer.AdaptiveSuperSamplingRec(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
+        else
+            return rayTracer.RegularSuperSampling(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
     }
 
     /**
