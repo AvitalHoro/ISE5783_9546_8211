@@ -16,9 +16,10 @@ public class Plane extends Geometry {
      * @param normal
      */
 
-    /**point and normal to representation plane*/
+    /**point on the plane*/
     Point q0;
 
+    /**normal to the plane*/
     Vector normal;
 
     /**
@@ -55,7 +56,6 @@ public class Plane extends Geometry {
 
     /**
      * Finds the intersection points of the ray with the surface of the object
-     *
      * @param ray The ray to intersect with the GeoPoint.
      * @param maxDistance The maximum distance from the source of the ray to intersect with.
      * @return A list of GeoPoints that are the intersections of the ray with the object.
@@ -73,7 +73,6 @@ public class Plane extends Geometry {
 
         // ray is laying in the plane axis
         double nv = n.dotProduct(v);
-
         //ray direction cannot be parallel to plane orientation
         if (isZero(nv)) {
             return null;

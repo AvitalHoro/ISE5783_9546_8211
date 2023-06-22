@@ -46,13 +46,8 @@ public class Point {
     public double getZ(){
         return this.xyz.d3;
     }
-
-    /**
-     *Compares two points
-     * @param obj
-     * @return Boolean value
-     */
     @Override
+    //return result of comparison
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj instanceof Point other)
@@ -70,7 +65,7 @@ public class Point {
     /**
      * sum point and vector to a new point
      * @param v
-     * @return  result of add
+     * @return result of add
      */
     public Point add(Vector v)
     {
@@ -78,7 +73,6 @@ public class Point {
     }
 
     /** subtract two points and return the vector result
-     *
      * @param other
      * @return result of subtract
      */
@@ -87,7 +81,6 @@ public class Point {
     }
 
     /** calculates the squared distance of two points
-     *
      * @param other
      * @return result of squared distance
      */
@@ -105,14 +98,5 @@ public class Point {
     public double distance(Point other)
     {
         return Math.sqrt(distanceSquared(other));
-    }
-    public Vector rotateVector(Vector vector, double angle) {
-        double cosAngle = Math.cos(Math.toRadians(angle));
-        double sinAngle = Math.sin(Math.toRadians(angle));
-
-        double newX = vector.getX() * cosAngle - vector.getZ() * sinAngle;
-        double newZ = vector.getX() * sinAngle + vector.getZ() * cosAngle;
-
-        return new Vector(newX, vector.getY(), newZ);
     }
 }

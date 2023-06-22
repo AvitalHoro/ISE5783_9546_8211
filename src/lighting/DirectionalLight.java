@@ -10,26 +10,32 @@ import primitives.Vector;
 public class DirectionalLight extends Light implements LightSource{
     private final Vector direction;
 
-    //region constructor
+    /**region constructor
+     * @param intensity
+     * @param direction
+     */
     public DirectionalLight(Color intensity, Vector direction) {
         super(intensity);
         this.direction = direction.normalize();
     }
-    //endregion
 
-    //region getIntensity
+    /**region getIntensity
+     * @param p
+     * @return
+     */
     @Override
     public Color getIntensity(Point p) {
         return this.getIntensity();
     }
-    //endregion
 
-    //region getL
+    /**region getL
+     * @param point
+     * @return
+     */
     @Override
     public Vector getL(Point point){
         return this.direction;
     }
-    //endregion
 
     /**
      * Returns the distance from the light source to the given point.

@@ -8,49 +8,41 @@ import primitives.*;
 public class PointLight extends Light implements LightSource{
     private final Point position;
 
-    // the attenuation factors
+    /**the attenuation factors*/
     private double kC = 1;
     private double kL = 0;
     private double kQ = 0;
 
-    //region constructor
+    /**region constructor
+     *
+     * @param intensity
+     * @param position
+     */
     public PointLight(Color intensity, Point position) {
         super(intensity);
         this.position = position;
     }
-    //endregion
 
-    //region getL
+    /**region getL
+     *
+     * @param point
+     * @return
+     */
     @Override
     public Vector getL(Point point){
         return point.subtract(this.position).normalize();
     }
-    //endregion
 
-//    /**
-//     * get the intensity of the light in relation to the distance from the point
-//     * @param p The point where the light strikes
-//     * @return the color of the point
-//     */
-//    @Override
-//    public Color getIntensity(Point p) {
-//        double dist = p.distance(position);
-//
-//        if(dist <= 0){
-//            return getIntensity();
-//        }
-//        Double3 factor = (kC.add(kL.scale(dist))).add(kQ.scale(dist * dist));
-//
-//        return getIntensity().reduce(factor);
-//    }
-
-    //region getIntensity
+    /**region getIntensity
+     *
+     * @param point
+     * @return
+     */
     @Override
     public Color getIntensity(Point point) {
         double d = point.distance(this.position);                           // distance from the light source
         return this.getIntensity().reduce (kC + kL * d + kQ * d * d);
     }
-    //endregion
 
     //region setters
     /**
@@ -83,6 +75,7 @@ public class PointLight extends Light implements LightSource{
         return this;
     }
     //endregion
+
     /**
      * Returns the distance from the light source to the given point.
      *

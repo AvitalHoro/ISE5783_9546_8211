@@ -17,8 +17,8 @@ public class Sphere extends RadialGeometry
     Point center;
 
     /**
-     *
-      * @return center point of sphere
+     * get center point
+     * @return center point of sphere
      */
     public Point getCenter() {
         return center;
@@ -35,7 +35,7 @@ public class Sphere extends RadialGeometry
     }
 
     /**
-     *
+     * calculate the normal vector in the specific point on the sphere
      * @param point
      * @return the normal
      */
@@ -46,8 +46,7 @@ public class Sphere extends RadialGeometry
     }
 
     /**
-     * Finds the intersection points of the ray with the surface of the object
-     *
+     * Finds the intersection points of the ray with the surface of the sphere
      * @param ray The ray to intersect with the GeoPoint.
      * @param maxDistance The maximum distance from the source of the ray to intersect with.
      * @return A list of GeoPoints that are the intersections of the ray with the object.
@@ -91,6 +90,7 @@ public class Sphere extends RadialGeometry
         if(t2 > 0 && alignZero(t2 - maxDistance) <= 0)
             return List.of(new GeoPoint(this, ray.getPoint(t2)));
 
-        return null; // no intersections at all
+        // no intersections at all
+        return null;
     }
 }

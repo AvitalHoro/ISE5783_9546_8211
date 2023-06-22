@@ -50,16 +50,16 @@ public abstract class Intersectable {
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
     /**
-     * pds class
+     * GeoPoint class which represents a point together with her shape
      */
     public static class GeoPoint {
         /**
-         *
+         * geometry shape
          */
         public Geometry geometry;
 
         /**
-         *
+         * point
          */
         public Point point;
 
@@ -96,6 +96,4 @@ public abstract class Intersectable {
                     '}';
         }
     }
-
-
 }

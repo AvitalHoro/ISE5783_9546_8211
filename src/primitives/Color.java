@@ -7,10 +7,13 @@ package primitives;
  * light's colors
  * @author Dan Zilberstein */
 public class Color {
-    public static final Color BLUE = new Color(0,0,255);
+
     /** The internal fields maintain RGB components as double numbers from 0 to
      * whatever... */
-    private final Double3     rgb;
+    private final Double3 rgb;
+
+    /** Blue color = (0,0,255) */
+    public static final Color BLUE = new Color(0,0,255);
 
     /** Black color = (0,0,0) */
     public static final Color BLACK = new Color();
@@ -69,7 +72,7 @@ public class Color {
 
     /** Operation of adding this and one or more other colors (by component)
      * @param  colors one or more other colors to add
-     * @return        new Color object which is a result of the operation */
+     * @return new Color object which is a result of the operation */
     public Color add(Color... colors) {
         double rr = rgb.d1;
         double rg = rgb.d2;

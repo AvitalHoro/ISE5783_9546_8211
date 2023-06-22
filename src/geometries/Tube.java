@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import static primitives.Util.isZero;
 
 public class Tube extends RadialGeometry {
     /** tube class extends RadialGeometry and represent by a ray
-     * @paam axisRay
+     * @param axisRay
      */
 
     /**
@@ -21,12 +22,17 @@ public class Tube extends RadialGeometry {
      */
     Ray axisRay;
 
-    //get axisRay
+    /** tube class extends RadialGeometry and represent by a ray
+     * @return axisRay
+     */
     public Ray getAxisRay() {
         return axisRay;
     }
 
-    //parameters constructor
+    /** parameters constructor
+     * @param radius
+     * @param axisRay
+     */
     public Tube(double radius, Ray axisRay) {
         super(radius);
         this.axisRay = axisRay;
@@ -34,14 +40,11 @@ public class Tube extends RadialGeometry {
 
     /**
      * A method that receives a ray and checks the points of GeoIntersection of the ray with the tube
-     *
      * @param ray the ray received
-     *
      * @return null / list that includes all the GeoIntersection points (contains the geometry (shape) and the point in 3D)
      */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-
         /*
         The procedure is as follows:
         The equation for a tube of radius r oriented along a line pa + vat:
@@ -71,6 +74,7 @@ public class Tube extends RadialGeometry {
         // check every variable to avoid ZERO vector
         if (ray.getP0().equals(this.getAxisRay().getP0())){
             vva = v.dotProduct(va);
+            //if v and va are vertical
             if (vva == 0){
                 a = v.dotProduct(v);
             }
@@ -122,8 +126,9 @@ public class Tube extends RadialGeometry {
         // calculate delta for result of equation
         double delta = b * b - 4 * a * c;
 
+        // no intersections
         if (delta <= 0) {
-            return null; // no intersections
+            return null;
         }
         else {
             // calculate points taking only those with t > 0
@@ -146,6 +151,11 @@ public class Tube extends RadialGeometry {
         return null;
     }
 
+    /**
+     * calculate the normal vector on specific point on the tube
+     * @param point
+     * @return Vector
+     */
     @Override
     public Vector getNormal(Point point) {
 
@@ -153,6 +163,7 @@ public class Tube extends RadialGeometry {
         // 𝑶 = 𝑷𝟎 + 𝒕 ∙ 𝒗
         //= 𝒏𝒐𝒓𝒎𝒂𝒍𝒊𝒛𝒆(𝑷 − 𝑶)
         double tmp = axisRay.getDir().dotProduct(point.subtract(axisRay.getP0()));
+       //if the point on the axisRay
         if (tmp == 0)
             return point.subtract(axisRay.getP0()).normalize();
         Point center = axisRay.getP0().add(axisRay.getDir().scale(tmp));

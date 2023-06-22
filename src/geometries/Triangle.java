@@ -23,7 +23,7 @@ public class Triangle extends Polygon{
     }
 
     /**
-     * Finds the intersection points of the ray with the surface of the object
+     * Finds the intersection points of the ray with the surface of the Triangle
      *
      * @param ray The ray to intersect with the GeoPoint.
      * @param maxDistance The maximum distance from the source of the ray to intersect with.

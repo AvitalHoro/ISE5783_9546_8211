@@ -15,10 +15,6 @@ public class AmbientLight extends Light
     public AmbientLight(Color Ia, Double3 Ka) {
         super(Ia.scale(Ka));
     }
-
-    /**
-     *
-     */
     public static final AmbientLight NONE = new AmbientLight(Color.BLACK, Double3.ZERO);
 
 }

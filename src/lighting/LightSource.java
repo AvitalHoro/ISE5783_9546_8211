@@ -5,20 +5,20 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- *
+ * interface to light source
  */
 public interface LightSource {
     /**
      *
      * @param p
-     * @return
+     * @return Intensity
      */
     public Color getIntensity(Point p);
 
     /**
-     *
+     * get L
      * @param p
-     * @return
+     * @return Vector
      */
     public Vector getL(Point p);
 

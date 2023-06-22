@@ -38,7 +38,14 @@ public class Material {
      */
     public int nShininess = 0;
 
+    /**
+     *  glossiness - how glossy the material is
+     */
     public double glossiness = 0;
+
+    /**
+     *  Shininess - how diffuse the material is
+     */
     public double diffuseness = 0;
 
 
@@ -112,7 +119,6 @@ public class Material {
         this.Kr = new Double3(kr);
         return this;
     }
-
 
     /**
      * set (According to the builder design template)

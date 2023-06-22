@@ -3,7 +3,6 @@ package primitives;
 public class Vector extends Point {
     /**
      * package friendly constructor
-     *
      * @param xyz Double3 value of vector head
      * @throws IllegalArgumentException in case of Vector(0,0,0)
      */
@@ -34,6 +33,7 @@ public class Vector extends Point {
     }
 
     @Override
+    //compare two vectors
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Vector other)) return false;
@@ -49,7 +49,6 @@ public class Vector extends Point {
     }
 
     /** multiplier of a vector in a double scalar
-     *
      * @param scalar
      * @return result of multiplication
      */
@@ -70,7 +69,6 @@ public class Vector extends Point {
     }
 
     /** does vector multiplication
-     *
      * @param other
      * @return result of vector multiplication
      */
@@ -91,7 +89,6 @@ public class Vector extends Point {
     }
 
     /** calculates the length of vector
-     *
      * @return length of vector
      */
     public double length() {
@@ -108,7 +105,6 @@ public class Vector extends Point {
 
     /**
      * Rotates the vector around the x-axis
-     *
      * @param alpha the amount to rotate in degrees
      * @return the current vector
      */
@@ -122,10 +118,8 @@ public class Vector extends Point {
         return new Vector(x, y, z);
     }
 
-
     /**
      * Rotates the vector around the y axis
-     *
      * @param alpha the amount to rotate in degrees
      * @return the current vector
      */
@@ -139,10 +133,8 @@ public class Vector extends Point {
         return new Vector(x, y, z);
     }
 
-
     /**
      * Rotates the vector around the z axis
-     *
      * @param alpha the amount to rotate in degrees
      * @return the current vector
      */
