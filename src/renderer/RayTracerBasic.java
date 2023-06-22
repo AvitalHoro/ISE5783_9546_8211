@@ -346,11 +346,9 @@ public class RayTracerBasic extends RayTracerBase {
             }
         }
 
-
         if (nextCenterPList == null || nextCenterPList.size() == 0) {
             return primitives.Color.BLACK;
         }
-
 
         boolean isAllEquals = true;
         primitives.Color tempColor = colorList.get(0);
@@ -386,7 +384,6 @@ public class RayTracerBasic extends RayTracerBase {
                 double randomY = offsetY + random.nextDouble() * minHeight;
 
                 Point subPixelPoint = centerP.add(Right.scale(randomX - Width / 2)).add(Vup.scale(randomY - Height / 2));
-
 
                 if (prePoints == null || !isInList(prePoints, subPixelPoint)) {
                     Ray ray = new Ray(cameraLoc, subPixelPoint.subtract(cameraLoc));

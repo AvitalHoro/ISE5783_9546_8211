@@ -1,10 +1,8 @@
 package primitives;
 
+/** point class represents by Double3
+ */
 public class Point {
-    /** point class represents by Double3
-     * @param xyz
-     */
-
     /** Double3 represents a point*/
     final Double3 xyz;
 
@@ -17,7 +15,6 @@ public class Point {
 
 
     /** constructor to initialize Point based object with its three number values
-     *
      * @param x
      * @param y
      * @param z
@@ -50,8 +47,12 @@ public class Point {
         return this.xyz.d3;
     }
 
+    /**
+     *Compares two points
+     * @param obj
+     * @return Boolean value
+     */
     @Override
-    //return if two points are equals
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj instanceof Point other)
@@ -104,5 +105,14 @@ public class Point {
     public double distance(Point other)
     {
         return Math.sqrt(distanceSquared(other));
+    }
+    public Vector rotateVector(Vector vector, double angle) {
+        double cosAngle = Math.cos(Math.toRadians(angle));
+        double sinAngle = Math.sin(Math.toRadians(angle));
+
+        double newX = vector.getX() * cosAngle - vector.getZ() * sinAngle;
+        double newZ = vector.getX() * sinAngle + vector.getZ() * cosAngle;
+
+        return new Vector(newX, vector.getY(), newZ);
     }
 }

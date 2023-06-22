@@ -36,32 +36,19 @@ class CameraMoveTest {
         double angleRadians = 2 * Math.PI / frames;
         double radius = camera.getP0().subtract(new Point(0,0,0)).length();
 
-//        for (int i = 0; i < frames; i++) {
-//            camera.rotate(0, angle, 0);
-//            camera.setP0(
-//                    Math.sin(angleRadians * (i + 1)) * radius,
-//                    0,
-//                    Math.cos(angleRadians * (i + 1)) * radius
-//            );
-//
-//            camera.setImageWriter(new ImageWriter("moveTest" + (i + 1), 500, 500))
-//                    .setRayTracer(new RayTracerBasic(scene))
-//                    .renderImage();
-//            camera.writeToImage();
-//        }
+        for (int i = 0; i < frames; i++) {
+            camera.rotate(0, angle, 0);
+            camera.setP0(
+                    Math.sin(angleRadians * (i + 1)) * radius,
+                    0,
+                    Math.cos(angleRadians * (i + 1)) * radius);
 
-        camera.rotate(0, angle, 0);
-        camera.setP0(
-                Math.sin(angleRadians * (9)) * radius,
-                0,
-                Math.cos(angleRadians * (9)) * radius
-        );
-
-        camera.setImageWriter(new ImageWriter("moveTest" + (9), 500, 500))
-                .setRayTracer(new RayTracerBasic(scene))
-                .renderImage();
-        camera.writeToImage();
-
+            camera.setImageWriter(new ImageWriter("moveTest" + (i + 1), 500, 500))
+                    .setMultiThreading(1)
+                    .setRayTracer(new RayTracerBasic(scene))
+                    .renderImage();
+            camera.writeToImage();
+        }
     }
 }
 

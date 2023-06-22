@@ -26,7 +26,6 @@ public class ImageWriter {
 
     private BufferedImage image;
     private String imageName;
-
     private Logger logger = Logger.getLogger("ImageWriter");
 
     // ***************** Constructors ********************** //
@@ -83,8 +82,8 @@ public class ImageWriter {
      * The function writePixel writes a color of a specific pixel into pixel color
      * matrix
      *
-     * @param xIndex X axis index of the pixel
-     * @param yIndex Y axis index of the pixel
+     * @param xIndex X xIndex index of the pixel
+     * @param yIndex Y yIndex index of the pixel
      * @param color  final color of the pixel
      */
     public void writePixel(int xIndex, int yIndex, Color color) {
@@ -108,7 +107,6 @@ public class ImageWriter {
             for (int j = 0; j < nY; j+= interval) {
                 // _width/interval // _height/interval
                 writePixel(i, j, color);
-
             }
         }
     }

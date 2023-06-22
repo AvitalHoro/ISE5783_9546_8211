@@ -213,8 +213,7 @@ public class Camera {
         }
         Pixel.initialize(imageWriter.getNy(), imageWriter.getNx(), 1);
 
-
-        if (!adaptive) {
+        if (antiAliasing == 1) {
             while (threadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
@@ -223,13 +222,13 @@ public class Camera {
                 }).start();
             }
             Pixel.waitToFinish();
-        }
-        else {
+
+        } else {
             while (threadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                        imageWriter.writePixel(pixel.col, pixel.row, SuperSampling(imageWriter.getNx(),
-                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing, false));
+                        imageWriter.writePixel(pixel.col, pixel.row, rayTracer.TraceRays(constructRays(imageWriter.getNx(),
+                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing)));
                 }).start();
             }
             Pixel.waitToFinish();
@@ -363,6 +362,7 @@ public class Camera {
     public void writeToImage() {
         imageWriter.writeToImage();
     }
+
     /**
      * Rotates the camera around the axes with the given angles
      *
