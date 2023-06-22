@@ -222,13 +222,13 @@ public class Camera {
                 }).start();
             }
             Pixel.waitToFinish();
-
-        } else {
+        }
+        else {
             while (threadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                        imageWriter.writePixel(pixel.col, pixel.row, rayTracer.TraceRays(constructRays(imageWriter.getNx(),
-                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing)));
+                        imageWriter.writePixel(pixel.col, pixel.row, SuperSampling(imageWriter.getNx(),
+                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing, adaptive));
                 }).start();
             }
             Pixel.waitToFinish();
@@ -238,7 +238,7 @@ public class Camera {
 
     /**
      * Checks the color of the pixel with the help of individual rays and averages between them and only
-     * if necessary continues to send beams of rays in recursion
+     * if necessary continues to send beams of rays in recursion//לתקן תיעוד של זה
      * @param nX amount of pixels by length
      * @param nY amount of pixels by width
      * @param j The position of the pixel relative to the y-axis
@@ -336,6 +336,7 @@ public class Camera {
      * @param j  the y coordinate
      * @return the ray
      */
+
     public List<Ray> constructRays(int nX, int nY, int j, int i, int numOfRays) {
         List<Ray> rays = new LinkedList<>();
         Point centralPixel = getCenterOfPixel(nX, nY, j, i);
@@ -379,3 +380,6 @@ public class Camera {
         return this;
     }
 }
+
+
+
