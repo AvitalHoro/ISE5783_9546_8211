@@ -26,7 +26,7 @@ public class CameraIntegrationTests {
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
                 intersectionPoints = geo.findIntersections(
-                        (Ray) camera.constructRays(3, 3, j, i, 32));
+                        (Ray) camera.constructRays(3, 3, j, i));
                 if (intersectionPoints != null)
                     intersections += intersectionPoints.size();
             }
@@ -36,7 +36,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a sphere
-     * {@link renderer.Camera#constructRays(int, int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int)}.
      */
     @Test
     public void SphereIntegration() {
@@ -68,7 +68,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a plane
-     * {@link renderer.Camera#constructRays(int, int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int)}.
      */
     @Test
     public void PlaneIntegration() {
@@ -87,7 +87,7 @@ public class CameraIntegrationTests {
 
     /**
      * integration tests for constructing a ray through a pixel with a triangle
-     * {@link renderer.Camera#constructRays(int, int, int, int, int)}.
+     * {@link renderer.Camera#constructRays(int, int, int, int)}.
      */
     @Test
     public void TriangleIntegration() {

@@ -111,6 +111,8 @@ public class Tube extends RadialGeometry {
                 c = (deltaP.dotProduct(deltaP)) - this.getRadius() * this.getRadius();
             }
             else {
+                if (v.equals(va.scale(vva)) || v.equals(va.scale(vva)))
+                    return null;
                 a = (v.subtract(va.scale(vva))).dotProduct(v.subtract(va.scale(vva)));
                 if (deltaP.equals(va.scale(deltaP.dotProduct(va)))){
                     b = 0;

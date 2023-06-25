@@ -12,10 +12,9 @@ import static primitives.Util.*;
  * this class represent camera by location <br/>
  * and directions toward, right and up to the scene that lives in a virtual view plane. <br/>
  * The view plane is represent by height and wight
- * @author rivki and efrat
+ * @author ahuva and avital
  */
 public class Camera {
-
     private Point p0;
     private Vector vRight;
     private Vector vUp;
@@ -161,6 +160,7 @@ public class Camera {
 
     /**
      * set the imageWriter for the Camera
+     * @param imageWriter
      * @return the Camera object
      */
     public Camera setImageWriter(ImageWriter imageWriter) {
@@ -177,6 +177,7 @@ public class Camera {
     }
     /**
      * set the adaptive
+     * @param  adaptive
      * @return the Camera object
      */
     public Camera setadaptive(boolean adaptive) {
@@ -185,6 +186,7 @@ public class Camera {
     }
     /**
      * set the threadsCount
+     * @param threadsCount
      * @return the Camera object
      */
     public Camera setMultiThreading(int threadsCount) {
@@ -194,6 +196,9 @@ public class Camera {
     }
     /**
      * set senter the camera
+     * @param x
+     * @param y
+     * @param z
      */
     public void setP0(double x,double y, double z) {
         this.p0=new Point(x,y,z);
@@ -205,27 +210,36 @@ public class Camera {
      * @return the Camera object
      */
     public Camera renderImage() {
+        //If one of the fields of the camera is wrong
         if (p0 == null || vRight == null
                 || vUp == null || vTo == null || distance == 0
                 || width == 0 || height == 0 || centerPoint == null
                 || imageWriter == null || rayTracer == null) {
             throw new MissingResourceException("Missing camera data", Camera.class.getName(), null);
         }
+        //initialize of the pixel
         Pixel.initialize(imageWriter.getNy(), imageWriter.getNx(), 1);
 
+        //if there is no antialiasing
         if (antiAliasing == 1) {
+            //over all the threads
             while (threadsCount-- > 0) {
                 new Thread(() -> {
+                    //over all the pixels ant print its
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
                         imageWriter.writePixel(pixel.col, pixel.row, rayTracer.TraceRays(constructRays(imageWriter.getNx(),
-                                imageWriter.getNy(), pixel.col, pixel.row, antiAliasing)));
+                                imageWriter.getNy(), pixel.col, pixel.row)));
                 }).start();
             }
+            //wait to all the pixel finish
             Pixel.waitToFinish();
         }
+        //if there is antialiasing
         else {
+            //over all the threads
             while (threadsCount-- > 0) {
                 new Thread(() -> {
+                    //over all the pixels ant print its
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
                         imageWriter.writePixel(pixel.col, pixel.row, SuperSampling(imageWriter.getNx(),
                                 imageWriter.getNy(), pixel.col, pixel.row, antiAliasing, adaptive));
@@ -237,8 +251,7 @@ public class Camera {
     }
 
     /**
-     * Checks the color of the pixel with the help of individual rays and averages between them and only
-     * if necessary continues to send beams of rays in recursion//לתקן תיעוד של זה
+     Calculates the color of the pixel using a beam of rays in an adaptive or regular method
      * @param nX amount of pixels by length
      * @param nY amount of pixels by width
      * @param j The position of the pixel relative to the y-axis
@@ -246,7 +259,7 @@ public class Camera {
      * @param numOfRays The amount of rays sent
      * @return Pixel color
      */
-    private Color SuperSampling(int nX, int nY, int j, int i,  int numOfRays, boolean adaptiveAlising)  {
+    private Color SuperSampling(int nX, int nY, int j, int i, int numOfRays, boolean adaptiveAlising)  {
         Vector Vright = vRight;
         Vector Vup = vUp;
         Point cameraLoc = this.getP0();
@@ -255,21 +268,22 @@ public class Camera {
 
         Point pIJ = getCenterOfPixel(nX, nY, j, i);
 
+        //the size of sub pixel
         double rY = alignZero(height / nY);
-        // the ratio Rx = w/Nx, the width of the pixel
         double rX = alignZero(width / nX);
-
 
         double PRy = rY/numOfRaysInRowCol;
         double PRx = rX/numOfRaysInRowCol;
+        //if antialiasing is adaptive
         if (adaptiveAlising)
             return rayTracer.AdaptiveSuperSamplingRec(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
+        //if antialiasing is not adaptive
         else
             return rayTracer.RegularSuperSampling(pIJ, rX, rY, PRx, PRy,cameraLoc,Vright, Vup,null);
     }
 
     /**
-     *Grid printing
+     *Grid printing of the view plane
      * @param interval The space between pixels
      * @param color color of grid
      */
@@ -280,7 +294,7 @@ public class Camera {
     }
 
     /**
-     * construct ray through a pixel in the view plane
+     * construct ray through the center of pixel in the view plane
      * nX and nY create the resolution
      * @param nX number of pixels in the width of the view plane
      * @param nY number of pixels in the height of the view plane
@@ -289,7 +303,8 @@ public class Camera {
      * @return ray that goes through the pixel (j, i)  Ray(p0, Vi,j)
      */
     public Ray constructRayThroughPixel(int nX, int nY, int j, int i) {
-        Point pIJ = getCenterOfPixel(nX, nY, j, i); // center point of the pixel
+        // center point of the pixel
+        Point pIJ = getCenterOfPixel(nX, nY, j, i);
 
         //Vi,j = Pi,j - P0, the direction of the ray to the pixel(j, i)
         Vector vIJ = pIJ.subtract(p0);
@@ -328,7 +343,7 @@ public class Camera {
     }
 
     /**
-     * function that returns the rays from the camera to the point
+     * function that returns the list of rays from the camera to the point
      *
      * @param nX the x resolution
      * @param nY the y resolution
@@ -337,13 +352,17 @@ public class Camera {
      * @return the ray
      */
 
-    public List<Ray> constructRays(int nX, int nY, int j, int i, int numOfRays) {
+    public List<Ray> constructRays(int nX, int nY, int j, int i) {
+        //empty list to save the rays
         List<Ray> rays = new LinkedList<>();
+        //calculate the center of pixel
         Point centralPixel = getCenterOfPixel(nX, nY, j, i);
+        //calculate the size of sub-pixel
         double rY = height / nY / antiAliasing;
         double rX = width / nX / antiAliasing;
         double x, y;
 
+        //Create a ray for each subpixel
         for (int rowNumber = 0; rowNumber < antiAliasing; rowNumber++) {
             for (int colNumber = 0; colNumber < antiAliasing; colNumber++) {
                 y = -(rowNumber - (antiAliasing - 1d) / 2) * rY;
@@ -354,6 +373,7 @@ public class Camera {
                 rays.add(new Ray(p0, pIJ.subtract(p0)));
             }
         }
+        //return the list of rays
         return rays;
     }
 
@@ -373,10 +393,14 @@ public class Camera {
      * @return the current camera
      */
     public Camera rotate(double x, double y, double z) {
+        //vector vTo after the rotation
         vTo = vTo.rotateX(x).rotateY(y).rotateZ(z);
+        //vector vUp after the rotation
         vUp = vUp.rotateX(x).rotateY(y).rotateZ(z);
+        //vector vRight after the rotation
         vRight = vTo.crossProduct(vUp);
 
+        //return the camera after the rotation
         return this;
     }
 }
