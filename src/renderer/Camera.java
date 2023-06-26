@@ -203,7 +203,7 @@ public class Camera {
     public void setP0(double x,double y, double z) {
         this.p0=new Point(x,y,z);
     }
-//endregion
+    //endregion
 
     /**
      * Checks that all fields are full and creates an image
