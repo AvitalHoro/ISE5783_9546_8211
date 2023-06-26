@@ -264,7 +264,8 @@ public class Camera {
         Vector Vup = vUp;
         Point cameraLoc = this.getP0();
         int numOfRaysInRowCol = (int)Math.floor(Math.sqrt(numOfRays));
-        if(numOfRaysInRowCol == 1)  return rayTracer.traceRay(constructRayThroughPixel(nX, nY, j, i));
+        if(numOfRaysInRowCol == 1)
+            return rayTracer.traceRay(constructRayThroughPixel(nX, nY, j, i));
 
         Point pIJ = getCenterOfPixel(nX, nY, j, i);
 

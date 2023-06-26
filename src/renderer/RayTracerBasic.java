@@ -4,16 +4,14 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
-import java.util.Random;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import static geometries.Intersectable.GeoPoint;
 import static java.awt.Color.BLACK;
 import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
 
 /**
  * RayTracerBasic class that extends the RayTracer class
@@ -289,49 +287,6 @@ public class RayTracerBasic extends RayTracerBase {
             }
         }
         return ktr;
-    }
-
-    /**
-     * Building a beam of rays for transparency and reflection
-     *
-     * @param ray       The beam coming out of the camera
-     * @param direction the vector
-     * @param glossy    The amount of gloss
-     * @param n         normal
-     * @return Beam of rays
-     */
-    List<Ray> raysGrid(Ray ray, int direction, double glossy, Vector n) {
-        int numOfRowCol = isZero(glossy) ? 1 : (int) Math.ceil(Math.sqrt(glossinessRaysNum));
-        if (numOfRowCol == 1) return List.of(ray);
-        Vector Vup;
-        double Ax = Math.abs(ray.getDir().getX()), Ay = Math.abs(ray.getDir().getY()), Az = Math.abs(ray.getDir().getZ());
-        if (Ax < Ay)
-            Vup = Ax < Az ? new Vector(0, -ray.getDir().getZ(), ray.getDir().getY()) :
-                    new Vector(-ray.getDir().getY(), ray.getDir().getX(), 0);
-        else
-            Vup = Ay < Az ? new Vector(ray.getDir().getZ(), 0, -ray.getDir().getX()) :
-                    new Vector(-ray.getDir().getY(), ray.getDir().getX(), 0);
-        Vector Vright = Vup.crossProduct(ray.getDir()).normalize();
-        Point pc = ray.getPoint(distanceGrid);
-        double step = glossy / sizeGrid;
-        Point pij = pc.add(Vright.scale(numOfRowCol / 2 * -step)).add(Vup.scale(numOfRowCol / 2 * -step));
-        Vector tempRayVector;
-        Point Pij1;
-
-        List<Ray> rays = new ArrayList<>();
-        rays.add(ray);
-        for (int i = 1; i < numOfRowCol; i++) {
-            for (int j = 1; j < numOfRowCol; j++) {
-                Pij1 = pij.add(Vright.scale(i * step)).add(Vup.scale(j * step));
-                tempRayVector = Pij1.subtract(ray.getP0());
-                if (n.dotProduct(tempRayVector) < 0 && direction == 1) //refraction
-                    rays.add(new Ray(ray.getP0(), tempRayVector));
-                if (n.dotProduct(tempRayVector) > 0 && direction == -1) //reflection
-                    rays.add(new Ray(ray.getP0(), tempRayVector));
-            }
-        }
-
-        return rays;
     }
 
     /**
